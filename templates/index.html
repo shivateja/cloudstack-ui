@@ -36,7 +36,7 @@
                 <a class="brand" href="#">CloudStack</a>
                 <div class="nav-collapse">
                     <ul class="nav">
-                        <li id="accounts"><a href="#accounts">Accounts</a></li>
+                        <li id="users"><a href="#users">Users</a></li>
                         <li id="virtualmachines"><a href="#virtualmachines">Virtual Machines</a></li>
                         <li id="events"><a href="#events">Events</a></li>
                         <li id="configurations"><a href="#configurations">Configurations</a></li>
@@ -53,7 +53,8 @@
  
         <div class="row">
             <div class="span12">
-                <div id="main">
+                <div id="main" style="text-align: center;">
+                    <!--Content inserted dynamically here -->
                 </div>
             </div>
         </div>
@@ -64,12 +65,60 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/template" id="home">
+        <img src="http://cloudstack.apache.org/images/cloudmonkey-fp.png" style="margin-top: 100px;margin-bottom: 100px;">
         <h1>CloudStack UI using Backbone.js and Twitter Bootstrap</h1>
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script src="{{ url_for('static', filename="bootstrap/js/bootstrap.min.js") }}"></script>
-    <script src="http://underscorejs.org/underscore-min.js"></script>
-    <script src="http://documentcloud.github.io/backbone/backbone-min.js"></script>
-    <script src="{{ url_for('static', filename="js/app.js") }}"></script>
+    <script type="text/template" id="form">
+        <form class="form-horizontal" id="updateform">
+            <fieldset>
+            <legend>User Details</legend>
+            <%_.each(model.responsemap, function(value, key) { %>
+                <% console.log(key, value) %>
+                <div class="control-group">
+                    <label class="control-label" for="input01"><%=key%></label>
+                    <div class="controls">
+                        <input type="text" class="input-xxlarge" id=<%=value%> name=<%=value%> <%=model.get(value)?"value="+model.get(value):" "%> 
+                        <%= model.editable.indexOf(value) == -1? " readonly":""%> width="auto">
+                    </div>
+                </div>
+                <%
+            })%>
+
+            <div class="control-group">
+                <label class="control-label" for="input01"></label>
+                <div class="controls">
+                    <button id="submit" class="btn btn-success" type="button">Update Details</button>
+                </div>
+            </fieldset>
+        </form>
+
+    </script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename="bootstrap/js/bootstrap.min.js") }}"></script>
+    <script type="text/javascript" src="http://underscorejs.org/underscore-min.js"></script>
+    <script type="text/javascript" src="http://documentcloud.github.io/backbone/backbone-min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename="js/app.js") }}"></script>
+	<script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
 </body>
 </html>
+<!--
+Form validation, not working, debug later
+        <%='<script type="text/javascript">'%>
+            <%='$(document).ready(function(){'%>
+                <%="$('updateform').validate({"%>
+                <%="rules: {"%>
+                        <% _.each(model.required, function(item){ %>
+                            <%=item+": required"%>
+                        <%})%>
+                <%="}"%>
+                <%='errorClass: "help-inline",'%>
+                <%='errorElement: "span",'%>
+                <%='highlight:function(element, errorClass, validClass) {'%>
+                    <%="$(element).parents('.control-group').addClass('error');"%>
+                <%="},"%>
+                <%="unhighlight: function(element, errorClass, validClass) {"%>
+                <%="$(element).parents('.control-group').removeClass('error');"%>
+                <%="$(element).parents('.control-group').addClass('success');"%>
+                <%="}});});"%>
+                <%="</script" + ">"%>*/
+-->

@@ -34,6 +34,51 @@
             this.deferred = this.fetch();
         }
     });
+    var User = Backbone.Model.extend({
+        url : "/api/users",
+        initialize: function(){
+            this.responsemap = {
+                Name : "username",
+                ID : "id",
+                State: "state",
+                ApiKey: "apikey",
+                SecretKey: "secretkey",
+                AccountName: "account",
+                Role: "accounttype", /*Map these later*/
+                Domain: "domain",
+                Email: "email",
+                FirstName: "firstname",
+                LastName: "lastname",
+                TimeZone: "timezone"
+            };
+            this.editable = [
+                "username",
+                "email",
+                "firstname",
+                "lastname",
+                "timezone"
+            ]
+        }
+    });
+    var Users = Backbone.Collection.extend({
+        model : User,
+        url : "/api/users",
+        parse : function(response){
+            response = response.listusersresponse.user;
+            return response;
+        },
+        initialize: function(){
+            _.bindAll(this, "parse")
+            this.editable = true
+            this.tablemap = {
+                "Name" : "username",
+                "Role" : "account",
+                "Domain": "domain",
+                "State" : "state"
+            }
+            this.deferred = this.fetch();
+        }
+    });
     var Account = Backbone.Model.extend();
     var Accounts = Backbone.Collection.extend({
         model : Account,
@@ -44,6 +89,7 @@
         },
         initialize: function(){
             _.bindAll(this, "parse")
+            this.editable = true
             this.tablemap = {
                 "Name" : "name",
                 "Role" : "account",
@@ -137,6 +183,7 @@
             for(var key in this.collection.tablemap){
                 response += "<th>" + key + "</th>";
             }
+            if(this.collection.editable) {response += '<th>Actions</th>'};
             return response;
         },
         get_tbody: function(){
@@ -147,6 +194,7 @@
                 for(var key in this.collection.tablemap){
                     response += "<td>" + item.get(this.collection.tablemap[key]) + "</td>";
                 }
+                if(this.collection.editable){ response += '<td><a class="btn" href="#edit/' + item.get("id") + '">Edit</a></td>';};
                 response += "</tr>";
             }, this);
             response += "</tbody>";
@@ -162,19 +210,65 @@
             this.collection.deferred.done(function(){
                var tbody = _this.get_tbody();
                $("table", _this.el).append(tbody);
-            })
+            });
         }
+    });
+
+    var EditView = Backbone.View.extend({
+        el: $('#main'),
+        events:{
+            "click button#submit": "submit"
+        },
+
+        initialize: function(){
+            var _this = this;
+            _.bindAll(this, "render", "submit");
+            this.collection = new this.collection;
+            this.collection.deferred.done(function(){
+                _this.render();
+            });
+        },
+        render: function(){
+            this.user = this.collection.get(this.id);
+            console.log(this.user)
+            var variables = {
+                model : this.user
+            };
+            $(this.el).empty();
+            $(this.el).html(_.template($('#form').html(), variables));
+        },
+        submit : function(){
+            var serialized = $("#updateform", this.el).serializeArray();
+            var output = {};
+            var data;
+            for(var i = 0; i < serialized.length; i++){
+                data = serialized[i]
+                console.log(data);
+                output[data["name"]] = data["value"];
+            }
+            this.user.save(output,{
+                success: function(model, response){
+                    app_router.navigate('users', true);
+                },
+                error: function(){
+                    alert("Error");
+                }
+            });
+            console.log(this.user.toJSON());
+            return false;
+        },
     });
     var AppRouter = Backbone.Router.extend({
         routes: {
             "": "index",
-            "accounts": "accounts",
+            "users": "users",
             "virtualmachines": "virtualmachines",
             "events": "events",
             "configurations": "configurations",
             "serviceofferings": "serviceofferings",
             "networks": "networks",
             "zones": "zones",
+            "edit/:id": "edit",
             "*actions": "defaultRoute",
         }
     });
@@ -188,9 +282,9 @@
         $('#main').html(_.template( $('#home').html(), {}));
     });
 
-    app_router.on('route:accounts', function(){
-        var accounts = new Accounts();
-        var tableview = new TableView({collection: accounts});
+    app_router.on('route:users', function(){
+        var users = new Users();
+        var tableview = new TableView({collection: users});
     });
     app_router.on('route:events', function(){
         var events = new Events();
@@ -215,6 +309,13 @@
     app_router.on('route:zones', function(){
         var zones = new Zones();
         var tableview = new TableView({collection: zones});
+    });
+    app_router.on('route:edit', function(id){
+        var editview = new EditView({
+            id : id,
+            collection: Users,
+            router: this
+        });
     });
 
     /*Add Later, toggle "active" class
