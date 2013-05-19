@@ -53,7 +53,7 @@
  
         <div class="row">
             <div class="span12">
-                <div id="main" style="text-align: center;">
+                <div id="main">
                     <!--Content inserted dynamically here -->
                 </div>
             </div>
@@ -65,15 +65,36 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script type="text/template" id="home">
-        <img src="http://cloudstack.apache.org/images/cloudmonkey-fp.png" style="margin-top: 100px;margin-bottom: 100px;">
-        <h1>CloudStack UI using Backbone.js and Twitter Bootstrap</h1>
+        <div style="text-align:center">
+            <img src="http://cloudstack.apache.org/images/cloudmonkey-fp.png" style="margin-top: 100px;margin-bottom: 100px;">
+            <h1>CloudStack UI using Backbone.js and Twitter Bootstrap</h1>
+        </div>
+    </script>
+    <script type="text/template" id="table">
+        <table class="table table-striped table-bordered">
+            <thead><tr>
+                <%_.each(collection.tablemap, function(value, key){ %>
+                    <th><%=key%></th>
+                <% });%>
+                <%= collection.editable?"<th> Actions </th>":"" %>
+            </tr></thead>
+            <tbody>
+                <%_.each(collection.models,function(item){ %>
+                    <tr>
+                        <%_.each(collection.tablemap, function(value, key) { %>
+                            <td><%=item.get(value)%></td>
+                        <% });%>
+                        <%= collection.editable?'<td><a class="btn" href="#edit/' + item.get("id") +'">Edit</a></td>':"" %>
+                    </tr>
+                <%}) %>
+            </tbody>
+        </table>
     </script>
     <script type="text/template" id="form">
         <form class="form-horizontal" id="updateform">
             <fieldset>
             <legend>User Details</legend>
             <%_.each(model.responsemap, function(value, key) { %>
-                <% console.log(key, value) %>
                 <div class="control-group">
                     <label class="control-label" for="input01"><%=key%></label>
                     <div class="controls">
@@ -89,6 +110,7 @@
                 <div class="controls">
                     <button id="submit" class="btn btn-success" type="button">Update Details</button>
                 </div>
+            </div>
             </fieldset>
         </form>
 

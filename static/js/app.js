@@ -164,7 +164,7 @@
         initialize: function(){
             _.bindAll(this, "parse")
             this.tablemap = {
-                "id": "id",
+                "ID": "id",
                 "Zone" : "name",
                 "Network Type": "networktype",
                 "Allocation State": "allocationstate"
@@ -184,6 +184,7 @@
                 response += "<th>" + key + "</th>";
             }
             if(this.collection.editable) {response += '<th>Actions</th>'};
+            response += "</tr></thead>"
             return response;
         },
         get_tbody: function(){
@@ -201,15 +202,19 @@
             return response;
         },
         render: function(){
-            var tbody;
+            var variables = {
+                collection : this.collection
+            }
+            /*var tbody;*/
             var _this = this;
-            /*TODO: Better to move it to templates*/
-            $(this.el).html('<table class="table table-striped table-bordered"></table>');
+            /*$(this.el).html('<table class="table table-striped table-bordered"></table>');
             var thead = this.get_thead();
-            $("table", this.el).append(thead);
+            $("table", this.el).append(thead);*/
             this.collection.deferred.done(function(){
-               var tbody = _this.get_tbody();
-               $("table", _this.el).append(tbody);
+                $(_this.el).empty();
+                $(_this.el).html((_.template($('#table').html(), variables)));
+               /*var tbody = _this.get_tbody();
+               $("table", _this.el).append(tbody);*/
             });
         }
     });
@@ -248,14 +253,14 @@
             }
             this.user.save(output,{
                 success: function(model, response){
+                    alert("Saved succesfully");
                     app_router.navigate('users', true);
                 },
                 error: function(){
                     alert("Error");
                 }
             });
-            console.log(this.user.toJSON());
-            return false;
+            return;
         },
     });
     var AppRouter = Backbone.Router.extend({
