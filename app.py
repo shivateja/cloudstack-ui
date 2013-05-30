@@ -5,9 +5,10 @@ app = Flask(__name__)
 
 @app.route('/api/<subject>', methods=['GET', 'PUT'])
 def onlysubject(subject):
-    #Assume it is "list" verb for now.
+    #assert verb is "list"
     if request.method == 'GET':
         return apicall("list", subject, None)
+    #assert subject is "user"
     if request.method == 'PUT':
         return apicall("update", "user", request.json)
 
