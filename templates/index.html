@@ -84,7 +84,7 @@
                         <%_.each(collection.attributeNames, function(value, key) { %>
                             <td><%=item.get(key)%></td>
                         <% });%>
-                        <%= collection.editable?'<td><a class="btn" href="#edit/' + item.get("id") +'">Edit</a></td>':"" %>
+                        <%= collection.editable?'<td><a href="#edit/' + item.get("id") +'"><i class="icon-pencil"></i></a></td>':"" %>
                     </tr>
                 <%}) %>
             </tbody>
