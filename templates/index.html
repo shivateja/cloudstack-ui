@@ -94,12 +94,13 @@
         <form class="form-horizontal" id="updateform">
             <fieldset>
             <legend>User Details</legend>
-            <%_.each(model.responsemap, function(value, key) { %>
+            <%_.each(model.attributeNames, function(value, key) { %>
                 <div class="control-group">
-                    <label class="control-label" for="input01"><%=key%></label>
+                    <label class="control-label" for="<%=key%>"><%=value%></label>
                     <div class="controls">
-                        <input type="text" class="input-xxlarge" id=<%=value%> name=<%=value%> <%=model.get(value)?"value="+model.get(value):" "%> 
-                        <%= model.editable.indexOf(value) == -1? " readonly":""%> width="auto">
+                        <input type="text" class="input-xxlarge" id=<%=key%> name=<%=key%>
+                        <%=model.get(key)?"value="+model.get(key):" "%> 
+                        <%= model.editable.indexOf(key) == -1? " readonly":""%> width="auto">
                     </div>
                 </div>
                 <%
