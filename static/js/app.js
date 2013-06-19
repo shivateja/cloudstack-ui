@@ -9,7 +9,7 @@
         },
         initialize: function(){
             this.attributeNames = {
-                "id" : "Display Name",
+                "displayname" : "Display Name",
                 "instancename" : "Instance Name",
                 "zonename": "Zone Name",
                 "state" : "State"
