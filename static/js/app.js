@@ -175,46 +175,17 @@
     var TableView = Backbone.View.extend({
         el: $('#main'),
         initialize: function(){
-            _.bindAll(this, "render", "get_thead", "get_tbody");
+            _.bindAll(this, "render");
             this.render();
-        },
-        get_thead: function(){
-            response = "<thead><tr>"
-            for(var key in this.collection.tablemap){
-                response += "<th>" + key + "</th>";
-            }
-            if(this.collection.editable) {response += '<th>Actions</th>'};
-            response += "</tr></thead>"
-            return response;
-        },
-        get_tbody: function(){
-            response = "<tbody>"
-            this.collection.each(function(item){
-                /* Anything like "".join([]) in JavaScript ?*/
-                response += "<tr>";
-                for(var key in this.collection.tablemap){
-                    response += "<td>" + item.get(this.collection.tablemap[key]) + "</td>";
-                }
-                if(this.collection.editable){ response += '<td><a class="btn" href="#edit/' + item.get("id") + '">Edit</a></td>';};
-                response += "</tr>";
-            }, this);
-            response += "</tbody>";
-            return response;
         },
         render: function(){
             var variables = {
                 collection : this.collection
             }
-            /*var tbody;*/
             var _this = this;
-            /*$(this.el).html('<table class="table table-striped table-bordered"></table>');
-            var thead = this.get_thead();
-            $("table", this.el).append(thead);*/
             this.collection.deferred.done(function(){
                 $(_this.el).empty();
                 $(_this.el).html((_.template($('#table').html(), variables)));
-               /*var tbody = _this.get_tbody();
-               $("table", _this.el).append(tbody);*/
             });
         }
     });
