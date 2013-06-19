@@ -44,7 +44,7 @@
                 apikey: "API Key",
                 secretkey: "Secret Key",
                 account : "Account Name",
-                accounttype : "Role", /*Map these later*/
+                accounttype : "Role", /*Todo: Roles have to mapped with accounttypes*/
                 domain: "Domain",
                 email: "Email",
                 firstname: "First Name",
@@ -246,53 +246,55 @@
             "zones": "zones",
             "edit/:id": "edit",
             "*actions": "defaultRoute",
-        }
+        },
+
+        defaultRoute : function(actions) {
+            alert("No Handler found for " + actions);
+        },
+        /*Do not re-render views everytime, messing up event handling, refactor it*/
+        index : function(){
+            $('#main').html(_.template( $('#home').html(), {}));
+        },
+
+        users : function(){
+            var users = new Users();
+            var tableview = new TableView({collection: users});
+        },
+
+        events : function(){
+            var events = new Events();
+            var tableview = new TableView({collection: events});
+        },
+        virtualmachines : function(){
+            var virtualmachines = new VirtualMachines();
+            var tableview = new TableView({collection: virtualmachines})
+        },
+        configurations : function(){
+            var configurations = new Configurations();
+            var tableview = new TableView({collection: configurations});
+        },
+        serviceofferings : function(){
+            var serviceofferings = new ServiceOfferings();
+            var tableview = new TableView({collection: serviceofferings});
+        },
+        networks : function(){
+            var networks = new Networks();
+            var tableview = new TableView({collection: networks});
+        },
+        zones : function(){
+            var zones = new Zones();
+            var tableview = new TableView({collection: zones});
+        },
+        edit : function(id){
+            var editview = new EditView({
+                id : id,
+                collection: Users,
+                router: this
+            });
+        },
     });
+
     var app_router = new AppRouter;
-
-    app_router.on('route:defaultRoute', function(actions) {
-        alert("No Handler found for " + actions);
-    });
-
-    app_router.on('route:index', function(){
-        $('#main').html(_.template( $('#home').html(), {}));
-    });
-
-    app_router.on('route:users', function(){
-        var users = new Users();
-        var tableview = new TableView({collection: users});
-    });
-    app_router.on('route:events', function(){
-        var events = new Events();
-        var tableview = new TableView({collection: events});
-    });
-    app_router.on('route:virtualmachines', function(){
-        var virtualmachines = new VirtualMachines();
-        var tableview = new TableView({collection: virtualmachines})
-    });
-    app_router.on('route:configurations', function(){
-        var configurations = new Configurations();
-        var tableview = new TableView({collection: configurations});
-    });
-    app_router.on('route:serviceofferings', function(){
-        var serviceofferings = new ServiceOfferings();
-        var tableview = new TableView({collection: serviceofferings});
-    });
-    app_router.on('route:networks', function(){
-        var networks = new Networks();
-        var tableview = new TableView({collection: networks});
-    });
-    app_router.on('route:zones', function(){
-        var zones = new Zones();
-        var tableview = new TableView({collection: zones});
-    });
-    app_router.on('route:edit', function(id){
-        var editview = new EditView({
-            id : id,
-            collection: Users,
-            router: this
-        });
-    });
 
     /*Add Later, toggle "active" class
      * app_router.bind("all", function(){
