@@ -8,11 +8,11 @@
             return response;
         },
         initialize: function(){
-            this.tablemap = {
-                "Display name" : "id",
-                "Internal name" : "instancename",
-                "Zone name": "zonename",
-                "State" : "state"
+            this.attributeNames = {
+                "id" : "Display Name",
+                "instancename" : "Instance Name",
+                "zonename": "Zone Name",
+                "state" : "State"
             }
             this.deferred = this.fetch();
         }
@@ -26,10 +26,10 @@
             return response;
         },
         initialize: function(){
-            this.tablemap = {
-                "Name" : "name",
-                "Description" : "description",
-                "Value": "value"
+            this.attributeNames = {
+                "name" : "Name",
+                "description" : "Description",
+                "value": "Value"
             }
             this.deferred = this.fetch();
         }
@@ -37,19 +37,19 @@
     var User = Backbone.Model.extend({
         url : "/api/users",
         initialize: function(){
-            this.responsemap = {
-                Name : "username",
-                ID : "id",
-                State: "state",
-                ApiKey: "apikey",
-                SecretKey: "secretkey",
-                AccountName: "account",
-                Role: "accounttype", /*Map these later*/
-                Domain: "domain",
-                Email: "email",
-                FirstName: "firstname",
-                LastName: "lastname",
-                TimeZone: "timezone"
+            this.attributeNames = {
+                username : "Name",
+                id : "ID",
+                state: "State",
+                apikey: "API Key",
+                secretkey: "Secret Key",
+                account : "Account Name",
+                accounttype : "Role", /*Map these later*/
+                domain: "Domain",
+                email: "Email",
+                firstname: "First Name",
+                lastname: "Last Name",
+                timezone: "Time Zone"
             };
             this.editable = [
                 "username",
@@ -70,11 +70,11 @@
         initialize: function(){
             _.bindAll(this, "parse")
             this.editable = true
-            this.tablemap = {
-                "Name" : "username",
-                "Role" : "account",
-                "Domain": "domain",
-                "State" : "state"
+            this.attributeNames = {
+                "username" : "Name",
+                "account" : "Role",
+                "domain": "Domain",
+                "state" : "State"
             }
             this.deferred = this.fetch();
         }
@@ -91,10 +91,10 @@
             _.bindAll(this, "parse")
             this.editable = true
             this.tablemap = {
-                "Name" : "name",
-                "Role" : "account",
-                "Domain": "domain",
-                "State" : "state"
+                "name" : "Name",
+                "account" : "Role",
+                "domain": "Domain",
+                "state" : "State"
             }
             this.deferred = this.fetch();
         }
@@ -109,11 +109,11 @@
         },
         initialize: function(){
             _.bindAll(this, "parse")
-            this.tablemap = {
-                "Type" : "type",
-                "Description" : "description",
-                "Initiated By": "account",
-                "Date" : "created"
+            this.attributeNames = {
+                "type" : "Type",
+                "description" : "Description",
+                "account": "Initiated By",
+                "created" : "Date"
             }
             this.deferred = this.fetch();
         }
@@ -128,9 +128,9 @@
         },
         initialize: function(){
             _.bindAll(this, "parse")
-            this.tablemap = {
-                "Name" : "name",
-                "Description" : "displaytext",
+            this.attributeNames = {
+                "name" : "Name",
+                "displaytext" : "Description",
             }
             this.deferred = this.fetch();
         }
@@ -145,10 +145,10 @@
         },
         initialize: function(){
             _.bindAll(this, "parse")
-            this.tablemap = {
-                "Name" : "name",
-                "Type": "type",
-                "Zone Name": "zonename"
+            this.attributeNames = {
+                "name" : "Name",
+                "type": "Type",
+                "zonename": "Zone Name"
             }
             this.deferred = this.fetch();
         }
@@ -163,11 +163,11 @@
         },
         initialize: function(){
             _.bindAll(this, "parse")
-            this.tablemap = {
-                "ID": "id",
-                "Zone" : "name",
-                "Network Type": "networktype",
-                "Allocation State": "allocationstate"
+            this.attributeNames = {
+                "id": "ID",
+                "name" : "Zone",
+                "networktype": "Network Type",
+                "allocationstate": "Allocation State"
             }
             this.deferred = this.fetch();
         }
