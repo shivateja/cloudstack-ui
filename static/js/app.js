@@ -294,11 +294,8 @@
         },
     });
 
-<<<<<<< HEAD
     var app_router = new AppRouter;
-=======
     new AppRouter;
->>>>>>> ed9c7e5ec7b57744a3091c69b821be617438d5ff
 
     /*Add Later, toggle "active" class
      * app_router.bind("all", function(){
