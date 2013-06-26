@@ -49,7 +49,6 @@ angular.module("cloudstack").controller("NavCtrl", ["$scope", function($scope){
 }]);
 
 angular.module("cloudstack").controller("UsersListCtrl", ["$scope", "Users", "Dictionary" , function($scope, Users, Dictionary){
-    //Move these to seperate configuration file
     $scope.dictionary = Dictionary;
     Users.get(
         {},
