@@ -48,14 +48,9 @@ angular.module("cloudstack").controller("NavCtrl", ["$scope", function($scope){
     }
 }]);
 
-angular.module("cloudstack").controller("UsersListCtrl", ["$scope", "Users" , function($scope, Users){
+angular.module("cloudstack").controller("UsersListCtrl", ["$scope", "Users", "Dictionary" , function($scope, Users, Dictionary){
     //Move these to seperate configuration file
-    $scope.attributeNames = {
-        "username" : "Name",
-        "account" : "Role",
-        "domain": "Domain",
-        "state" : "State"
-    };
+    $scope.dictionary = Dictionary;
     Users.get(
         {},
         function(data){
@@ -72,14 +67,8 @@ angular.module("cloudstack").factory("Users",["$resource", function($resource){
     return $resource("/api/users");
 }]);
 
-angular.module("cloudstack").controller("VirtualMachinesListCtrl", ["$scope", "VirtualMachines" , function($scope, VirtualMachines){
-    //Move these to seperate configuration file
-    $scope.attributeNames = {
-        "displayname" : "Display Name",
-        "instancename" : "Instance Name",
-        "zonename": "Zone Name",
-        "state" : "State"
-    };
+angular.module("cloudstack").controller("VirtualMachinesListCtrl", ["$scope", "VirtualMachines", "Dictionary", function($scope, VirtualMachines, Dictionary){
+    $scope.dictionary = Dictionary;
     VirtualMachines.get(
         {},
         function(data){
@@ -96,14 +85,8 @@ angular.module("cloudstack").factory("VirtualMachines",["$resource", function($r
     return $resource("/api/virtualmachines");
 }]);
 
-angular.module("cloudstack").controller("EventsListCtrl", ["$scope", "Events" , function($scope, Events){
-    //Move these to seperate configuration file
-    $scope.attributeNames = {
-        "type" : "Type",
-        "description" : "Description",
-        "account": "Initiated By",
-        "created" : "Date"
-    }
+angular.module("cloudstack").controller("EventsListCtrl", ["$scope", "Events", "Dictionary", function($scope, Events, Dictionary){
+    $scope.dictionary = Dictionary;
     Events.get(
         {},
         function(data){
@@ -120,13 +103,8 @@ angular.module("cloudstack").factory("Events",["$resource", function($resource){
     return $resource("/api/events");
 }]);
 
-angular.module("cloudstack").controller("ConfigurationsListCtrl", ["$scope", "Configurations" , function($scope, Configurations){
-    //Move these to seperate configuration file
-    $scope.attributeNames =  {
-        "name" : "Name",
-        "description" : "Description",
-        "value": "Value"
-    }
+angular.module("cloudstack").controller("ConfigurationsListCtrl", ["$scope", "Configurations", "Dictionary", function($scope, Configurations, Dictionary){
+    $scope.dictionary = Dictionary;
     Configurations.get(
         {},
         function(data){
@@ -143,13 +121,8 @@ angular.module("cloudstack").factory("Configurations",["$resource", function($re
     return $resource("/api/configurations");
 }]);
 
-angular.module("cloudstack").controller("NetworksListCtrl", ["$scope", "Networks" , function($scope, Networks){
-    //Move these to seperate configuration file
-    $scope.attributeNames =  {
-        "name" : "Name",
-        "type" : "Type",
-        "zonename": "Zone Name"
-    }
+angular.module("cloudstack").controller("NetworksListCtrl", ["$scope", "Networks", "Dictionary", function($scope, Networks, Dictionary){
+    $scope.dictionary = Dictionary;
     Networks.get(
         {},
         function(data){
@@ -166,12 +139,8 @@ angular.module("cloudstack").factory("Networks",["$resource", function($resource
     return $resource("/api/networks");
 }]);
 
-angular.module("cloudstack").controller("ServiceOfferingsListCtrl", ["$scope", "ServiceOfferings" , function($scope, ServiceOfferings){
-    //Move these to seperate configuration file
-    $scope.attributeNames =  {
-        "name" : "Name",
-        "displaytext": "Description"
-    }
+angular.module("cloudstack").controller("ServiceOfferingsListCtrl", ["$scope", "ServiceOfferings", "Dictionary", function($scope, ServiceOfferings, Dictionary){
+    $scope.dictionary = Dictionary;
     ServiceOfferings.get(
         {},
         function(data){
@@ -188,14 +157,8 @@ angular.module("cloudstack").factory("ServiceOfferings",["$resource", function($
     return $resource("/api/serviceofferings");
 }]);
 
-angular.module("cloudstack").controller("ZonesListCtrl", ["$scope", "Zones" , function($scope, Zones){
-    //Move these to seperate configuration file
-    $scope.attributeNames = {
-        "id": "ID",
-        "name" : "Zone",
-        "networktype": "Network Type",
-        "allocationstate": "Allocation State"
-    }
+angular.module("cloudstack").controller("ZonesListCtrl", ["$scope", "Zones", "Dictionary", function($scope, Zones, Dictionary){
+    $scope.dictionary = Dictionary;
     Zones.get(
         {},
         function(data){

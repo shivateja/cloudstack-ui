@@ -70,7 +70,7 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th ng-repeat="attribute in toDisplay"> {{attributeNames[attribute]}} </th>
+                    <th ng-repeat="attribute in toDisplay"> {{dictionary.labels[attribute]}} </th>
                 </tr>
             </thead>
             <tbody>
@@ -86,5 +86,6 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script type="text/javascript" src="http://code.angularjs.org/1.0.7/angular-resource.js"></script>
     <script type="text/javascript" src="static/js/app.js"></script>
+    <script type="text/javascript" src="static/js/dictionary.js"></script>
 </body>
 </html>
