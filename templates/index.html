@@ -11,7 +11,7 @@
     <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style>
       body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        padding-top: 80px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
     <link href="static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -23,42 +23,41 @@
  
 </head>
  
-<body>
-    <!--TODO : Make a controller for nav bar -->
-    <div class="navbar navbar-fixed-top">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </a>
-        <div class="navbar-inner">
-            <div class="container">
-                <a class="brand" ng-href="/#/">CloudStack</a>
-                <div class="nav-collapse">
-                    <ul class="nav">
-                        <li id="users"><a ng-href="/#/users">Users</a></li>
-                        <li id="virtualmachines"><a ng-href="/#/virtualmachines">Virtual Machines</a></li>
-                        <li id="events"><a ng-href="/#/events">Events</a></li>
-                        <li id="configurations"><a ng-href="/#/configurations">Configurations</a></li>
-                        <li id="networks"><a href="/#/networks">Networks</a></li>
-                        <li id="serviceofferings"><a href="/#/serviceofferings">Service Offerings</a></li>
-                        <li id="zone"><a href="/#/zones">Zones</a></li>
-                    </ul>
-                </div><!--/.nav-collapse -->
+<body ng-controller="AppCtrl">
+    <header class="header" ng-controller="HeaderCtrl">
+        <!--TODO : Make a controller for nav bar -->
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" ng-href="/#/">CloudStack</a>
+                </div>
             </div>
         </div>
-    </div>
- 
-    <div class="container">
- 
+    </header>
+    <div class="container"> 
         <div class="row">
-            <div class="span12">
+            <div class="span3" ng-controller="NavCtrl">
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a href="/#/">Dashboard</a></li>
+                    <li><a href="/#/virtualmachines">Instances</a></li>
+                    <li><a href="/#/storage">Storage</a></li>
+                    <li><a href="/#/networks">Networks</a></li>
+                    <li><a href="/#/events">Events</a></li>
+                    <li><a href="/#/accounts">Accounts</a></li>
+                    <li><a href="/#/domains">Domains</a></li>
+                    <li><a href="/#/infrastructure">Infrastructure</a></li>
+                    <li><a href="/#/projects">Projects</a></li>
+                    <li><a href="/#/configurations">Global Settings</a></li>
+                    <li><a href="/#/serviceofferings">Service Offerings</a></li>
+                </ul>
+            </div>
+            <div class="span9">
                 <div id="main" ng-view>
                 </div>
             </div>
         </div>
- 
     </div> <!-- /container -->
+    </header>
 
     <script type="text/ng-template" id="default.html">
         <div style="text-align:center">
@@ -67,7 +66,7 @@
         </div>
     </script>
     <script type="text/ng-template" id="table.html">
-        <table class="table table-striped table-bordered">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th ng-repeat="attribute in toDisplay"> {{dictionary.labels[attribute]}} </th>
@@ -85,7 +84,19 @@
     <script type="text/javascript" src="static/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
     <script type="text/javascript" src="http://code.angularjs.org/1.0.7/angular-resource.js"></script>
-    <script type="text/javascript" src="static/js/app.js"></script>
-    <script type="text/javascript" src="static/js/dictionary.js"></script>
+    <script type="text/javascript" src="static/js/app/app.js"></script>
+    <script type="text/javascript" src="static/js/common/resources/virtualmachines.js"></script>
+    <script type="text/javascript" src="static/js/app/virtualmachines/virtualmachines.js"></script>
+    <script type="text/javascript" src="static/js/common/resources/volumes.js"></script>
+    <script type="text/javascript" src="static/js/app/storage/storage.js"></script>
+    <script type="text/javascript" src="static/js/common/resources/networks.js"></script>
+    <script type="text/javascript" src="static/js/app/networks/networks.js"></script>
+    <script type="text/javascript" src="static/js/common/resources/events.js"></script>
+    <script type="text/javascript" src="static/js/app/events/events.js"></script>
+    <script type="text/javascript" src="static/js/common/resources/accounts.js"></script>
+    <script type="text/javascript" src="static/js/app/accounts/accounts.js"></script>
+    <script type="text/javascript" src="static/js/common/resources/domains.js"></script>
+    <script type="text/javascript" src="static/js/app/domains/domains.js"></script>
+    <script type="text/javascript" src="static/js/common/dictionary.js"></script>
 </body>
 </html>
