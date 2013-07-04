@@ -1,4 +1,4 @@
-angular.module('domains', ['resources.domains']).
+angular.module('domains', ['resources.domains', 'services.breadcrumbs']).
 config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/domains',{
@@ -7,7 +7,9 @@ config(['$routeProvider', function($routeProvider){
     })
 }]);
 
-angular.module('domains').controller('DomainsListCtrl', ['$scope', 'Domains', 'Dictionary', function($scope, Domains, Dictionary){
+angular.module('domains').controller('DomainsListCtrl', ['$scope', 'Domains', 'Dictionary', 'Breadcrumbs', function($scope, Domains, Dictionary, Breadcrumbs){
+    Breadcrumbs.refresh();
+    Breadcrumbs.push('domains', '/#/domains');
     $scope.dictionary = Dictionary;
     $scope.collection = Domains.fetch();
     $scope.toDisplay = ['id', 'name'];

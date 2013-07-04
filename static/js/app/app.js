@@ -1,4 +1,4 @@
-angular.module("cloudstack",["virtualmachines", "storage", "networks", "events", "accounts", "domains"]).
+angular.module("cloudstack",["instances", "storage", "networks", "events", "accounts", "domains", "globalsettings", "serviceofferings", "services.breadcrumbs"]).
 config(["$routeProvider", function($routeProvider){
     $routeProvider.
     when('/',{
@@ -10,13 +10,13 @@ config(["$routeProvider", function($routeProvider){
     })
 }]);
 
-angular.module("cloudstack").controller("DefaultCtrl", ["$scope", function($scope){
+angular.module("cloudstack").controller("DefaultCtrl", ["$scope", "Breadcrumbs", function($scope, Breadcrumbs){
+    Breadcrumbs.refresh();
 }]);
 
-angular.module("cloudstack").controller("AppCtrl", ["$scope", function($scope){
-}]);
-
-angular.module("cloudstack").controller("NavCtrl", ["$scope", function($scope){
+angular.module("cloudstack").controller("AppCtrl", ["$scope", "Breadcrumbs", "Dictionary", function($scope, Breadcrumbs, Dictionary){
+    $scope.breadcrumbs = Breadcrumbs;
+    $scope.dictionary = Dictionary;
 }]);
 
 angular.module("cloudstack").controller("HeaderCtrl", ["$scope", function($scope){
