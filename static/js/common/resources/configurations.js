@@ -1,16 +1,9 @@
-angular.module('resources.configurations', []);
-angular.module('resources.configurations').factory('Configurations', ['$http', 'Configuration', function($http, Configuration){
+angular.module('resources.configurations', ['services.helperfunctions']);
+angular.module('resources.configurations').factory('Configurations', ['$http', 'Configuration', 'makeArray', function($http, Configuration, makeArray){
     this.fetch = function(){
-        var collection = [];
-        $http.get('/api/configurations').success(function(data){
-            response = data.listconfigurationsresponse.configuration;
-            for(var i=0; i<response.length; i++){
-                collection.push(new Configuration(response[i]));
-            }
-        }).error(function(data){
-                console.log('Error while fetching configurations list');
-        });
-        return collection;
+        return $http.get('/api/configurations').then(function(response){
+            return response.data.listconfigurationsresponse.configuration;
+        }).then(makeArray(Configuration));
     }
     return this;
 }]);

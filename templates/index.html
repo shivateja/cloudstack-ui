@@ -13,6 +13,9 @@
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
+      .sidebar-nav {
+        padding: 9px 0;
+      }
     </style>
     <link href="static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
  
@@ -24,42 +27,37 @@
 </head>
  
 <body ng-controller="AppCtrl">
-    <header class="header" ng-controller="HeaderCtrl">
-        <!--TODO : Make a controller for nav bar -->
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="brand" ng-href="/#/">CloudStack</a>
-                </div>
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" ng-href="/#/">CloudStack</a>
             </div>
         </div>
-    </header>
+    </div>
     <div class="container"> 
         <div class="row">
-            <div class="span2">
+            <div class="span2" ng-controller="NavCtrl">
                 <ul class="nav nav-tabs nav-stacked">
-                    <li><a href="/#/">Dashboard</a></li>
-                    <li><a href="/#/instances">Instances</a></li>
-                    <li><a href="/#/storage">Storage</a></li>
-                    <li><a href="/#/networks">Networks</a></li>
-                    <li><a href="/#/events">Events</a></li>
-                    <li><a href="/#/accounts">Accounts</a></li>
-                    <li><a href="/#/domains">Domains</a></li>
-                    <li><a href="/#/infrastructure">Infrastructure</a></li>
-                    <li><a href="/#/projects">Projects</a></li>
-                    <li><a href="/#/configurations">Global Settings</a></li>
-                    <li><a href="/#/serviceofferings">Service Offerings</a></li>
+                    <li ng-class="isActive('/')"><a href="/#/" >Dashboard</a></li>
+                    <li ng-class="isActive('instances')"><a href="/#/instances">Instances</a></li>
+                    <li ng-class="isActive('storage')"><a href="/#/storage">Storage</a></li>
+                    <li ng-class="isActive('networks')"><a href="/#/networks">Networks</a></li>
+                    <li ng-class="isActive('events')"><a href="/#/events">Events</a></li>
+                    <li ng-class="isActive('accounts')"><a href="/#/accounts">Accounts</a></li>
+                    <li ng-class="isActive('domains')"><a href="/#/domains">Domains</a></li>
+                    <li ng-class="isActive('infrastructure')"><a href="/#/infrastructure">Infrastructure</a></li>
+                    <li ng-class="isActive('projects')"><a href="/#/projects">Projects</a></li>
+                    <li ng-class="isActive('configurations')"><a href="/#/configurations">Global Settings</a></li>
+                    <li ng-class="isActive('serviceofferings')"><a href="/#/serviceofferings">Service Offerings</a></li>
                 </ul>
             </div>
             <div class="span10">
                 <ul class="breadcrumb">
                     <!--breadcrumbs is in AppCtrl-->
                     <li ng-repeat="breadcrumb in breadcrumbs.getAll()">
-                        <ng-switch on="$last">
-                            <a ng-switch-default href="{{breadcrumb.url}}">{{dictionary.labels[breadcrumb.id]}}</a>
-                            <span ng-switch-when="true">{{dictionary.labels[breadcrumb.id]}}</span>
-                        </ng-switch>
-                        <span class="divider">/</span>
+                        <a ng-hide="$last" href="{{breadcrumb.url}}">{{dictionary.labels[breadcrumb.id]}}</a>
+                        <span ng-show="$last">{{dictionary.labels[breadcrumb.id]}}</span>
+                        <span class="divider" ng-hide="$last">/</span>
                     </li>
                 </ul>
                 <div id="main" ng-view>
@@ -111,6 +109,7 @@
     <script type="text/javascript" src="static/js/common/resources/serviceofferings.js"></script>
     <script type="text/javascript" src="static/js/common/resources/configurations.js"></script>
     <script type="text/javascript" src="static/js/common/services/breadcrumbs.js"></script>
+    <script type="text/javascript" src="static/js/common/services/helperfunctions.js"></script>
     <script type="text/javascript" src="static/js/common/dictionary.js"></script>
 </body>
 </html>

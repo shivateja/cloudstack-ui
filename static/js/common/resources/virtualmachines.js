@@ -1,25 +1,19 @@
-angular.module('resources.virtualmachines',[]);
-angular.module("resources.virtualmachines").factory("VirtualMachines",["$http", "VirtualMachine", function($http, VirtualMachine){
+angular.module('resources.virtualmachines',['services.helperfunctions']);
+angular.module('resources.virtualmachines').factory('VirtualMachines',['$http', 'VirtualMachine', 'makeArray', function($http, VirtualMachine, makeArray){
     this.fetch = function(){
-        var collection = {};
-        $http.get('/api/virtualmachines').success(function(data){
-                response = data.listvirtualmachinesresponse.virtualmachine;
-                for(var i = 0; i < response.length; i++){
-                    collection[response[i]['id']] = new VirtualMachine(response[i]);
-                }
-            }).error(function(data){
-                console.log("Error while fetching virtual machines list");
-            });
-        return collection;
+        return $http.get('/api/virtualmachines').then(function(response){
+            //modify response
+            return response.data.listvirtualmachinesresponse.virtualmachine;
+        }).then(makeArray(VirtualMachine));
     };
     return this;
 }]);
 
-angular.module('resources.virtualmachines').factory('VirtualMachine',function (){
+angular.module('resources.virtualmachines').factory('VirtualMachine', ['$http', function ($http){
     var VirtualMachine = function(attrs){
         angular.extend(this, {
             start : function(){
-                console.log('Start vm with id '+ this.id);
+                console.log('Start vm with id' + this.id);
                 this.state = "Started";
             },
             stop : function(){
@@ -33,4 +27,4 @@ angular.module('resources.virtualmachines').factory('VirtualMachine',function ()
         angular.extend(this, attrs);
     };
     return VirtualMachine;
-});
+}]);

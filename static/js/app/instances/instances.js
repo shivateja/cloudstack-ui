@@ -11,7 +11,8 @@ angular.module("instances").controller("VirtualMachinesListCtrl", ["$scope", "Vi
         function($scope, VirtualMachines, Dictionary, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('instances', '/#/instances');
-    $scope.dictionary = Dictionary;
-    $scope.collection = VirtualMachines.fetch();
+    VirtualMachines.fetch().then(function(collection){
+        $scope.collection = collection;
+    });
     $scope.toDisplay = ["displayname", "instancename", "zonename", "state"];
 }]);

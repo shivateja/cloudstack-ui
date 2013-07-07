@@ -1,16 +1,9 @@
-angular.module('resources.networks',[]);
-angular.module('resources.networks').factory('Networks', ['$http', 'Network', function($http, Network){
+angular.module('resources.networks',['services.helperfunctions']);
+angular.module('resources.networks').factory('Networks', ['$http', 'Network', 'makeArray', function($http, Network, makeArray){
     this.fetch = function(){
-        var collection = {};
-        $http.get('/api/networks').success(function(data){
-            response = data.listnetworksresponse.network;
-            for(var i=0; i<response.length; i++){
-                collection[response[i]['id']] = new Network(response[i]);
-            }
-        }).error(function(data){
-            console.log('Error while fetching networks list');
-        });
-        return collection;
+        return $http.get('/api/networks').then(function(response){
+            return response.data.listnetworksresponse.network;
+        }).then(makeArray(Network));
     };
     return this;
 }]);

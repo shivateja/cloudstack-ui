@@ -1,16 +1,9 @@
-angular.module('resources.serviceofferings', []);
-angular.module('resources.serviceofferings').factory('ServiceOfferings', ['$http', 'ServiceOffering', function($http, ServiceOffering){
+angular.module('resources.serviceofferings', ['services.helperfunctions']);
+angular.module('resources.serviceofferings').factory('ServiceOfferings', ['$http', 'ServiceOffering', 'makeArray', function($http, ServiceOffering, makeArray){
     this.fetch = function(){
-        var collection = [];
-        $http.get('/api/serviceofferings').success(function(data){
-            var response = data.listserviceofferingsresponse.serviceoffering;
-            angular.forEach(response, function(value){
-                collection.push(new ServiceOffering(value));
-            });
-        }).error(function(data){
-            console.log('Error while fetching service offerings');
-        });
-        return collection;
+        return $http.get('/api/serviceofferings').then(function(response){
+            return response.data.listserviceofferingsresponse.serviceoffering;
+        }).then(makeArray(ServiceOffering));
     };
     return this;
 }]);

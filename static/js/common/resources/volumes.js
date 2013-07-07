@@ -1,18 +1,10 @@
-angular.module('resources.volumes', []);
-angular.module('resources.volumes').factory('Volumes', ['$http', 'Volume', function($http, Volume){
+angular.module('resources.volumes', ['services.helperfunctions']);
+angular.module('resources.volumes').factory('Volumes', ['$http', 'Volume', 'makeArray', function($http, Volume, makeArray){
     this.fetch = function(){
-        var collection = {};
-        $http.get('/api/volumes').success(function(data){
-            response = data.listvolumesresponse.volume;
-            for(var i = 0; i < response.length; i++){
-                collection[response[i]['id']] = new Volume(response[i]);
-            }
-        }).
-        error(function(data){
-            console.log('Error while fetching volumes list');
-        });
-        return collection;
-    }
+        return $http.get('/api/volumes').then(function(response){
+            return response.data.listvolumesresponse.volume;
+        }).then(makeArray(Volume));
+    };
     return this;
 }]);
 

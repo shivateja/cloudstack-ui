@@ -21,3 +21,10 @@ angular.module("cloudstack").controller("AppCtrl", ["$scope", "Breadcrumbs", "Di
 
 angular.module("cloudstack").controller("HeaderCtrl", ["$scope", function($scope){
 }]);
+
+angular.module("cloudstack").controller("NavCtrl", ["$scope", "$location", function($scope, $location){
+    $scope.isActive = function(page){
+        if($location.path() === '/' && page === '/') return 'active'; //home page
+        return $location.path().split('/')[1] === page? 'active': '';
+    }
+}]);

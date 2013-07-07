@@ -1,16 +1,9 @@
-angular.module('resources.domains', []);
-angular.module('resources.domains').factory('Domains', ['$http', 'Domain', function($http, Domain){
+angular.module('resources.domains', ['services.helperfunctions']);
+angular.module('resources.domains').factory('Domains', ['$http', 'Domain', 'makeArray', function($http, Domain, makeArray){
     this.fetch = function(){
-        var collection = {};
-        $http.get('/api/domains').success(function(data){
-            response = data.listdomainsresponse.domain;
-            for(var i=0; i< response.length; i++){
-                collection[response[i]['id']] = new Domain(response[i]);
-            }
-        }).error(function(data){
-            console.log('Error while fetching domains list');
-        });
-        return collection;
+        return $http.get('/api/domains').then(function(response){
+            return response.data.listdomainsresponse.domain;
+        }).then(makeArray(Domain));
     };
     return this;
 }]);
