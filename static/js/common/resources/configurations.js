@@ -1,7 +1,7 @@
-angular.module('resources.configurations', ['services.helperfunctions']);
-angular.module('resources.configurations').factory('Configurations', ['$http', 'Configuration', 'makeArray', function($http, Configuration, makeArray){
+angular.module('resources.configurations', ['services.helperfunctions', 'services.requester']);
+angular.module('resources.configurations').factory('Configurations', ['$http', 'Configuration', 'makeArray', 'requester', function($http, Configuration, makeArray, requester){
     this.fetch = function(){
-        return $http.get('/api/configurations').then(function(response){
+        return requester.get('listConfigurations').then(function(response){
             return response.data.listconfigurationsresponse.configuration;
         }).then(makeArray(Configuration));
     }
@@ -10,8 +10,6 @@ angular.module('resources.configurations').factory('Configurations', ['$http', '
 
 angular.module('resources.configurations').factory('Configuration', function(){
     var Configuration = function(attrs){
-        angular.extend(this,{
-        })
         angular.extend(this, attrs);
     }
     return Configuration;

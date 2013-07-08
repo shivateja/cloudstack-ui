@@ -7,10 +7,9 @@ config(['$routeProvider', function($routeProvider){
     })
 }]);
 
-angular.module('networks').controller('NetworksListCtrl', ['$scope', 'Networks', 'Dictionary', 'Breadcrumbs', function($scope, Networks, Dictionary, Breadcrumbs){
+angular.module('networks').controller('NetworksListCtrl', ['$scope', 'Networks', 'Breadcrumbs', function($scope, Networks, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('networks', '/#/networks');
-    $scope.dictionary = Dictionary;
     $scope.collection = Networks.fetch();
     $scope.toDisplay = ['name', 'type', 'zonename'];
 }]);

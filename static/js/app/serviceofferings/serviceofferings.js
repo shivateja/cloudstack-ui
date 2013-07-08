@@ -7,11 +7,9 @@ config(['$routeProvider', function($routeProvider){
     })
 }]);
 
-angular.module('serviceofferings').controller('ServiceOfferingsListCtrl', ['$scope', 'ServiceOfferings', 'Dictionary', 'Breadcrumbs',
-        function($scope, ServiceOfferings, Dictionary, Breadcrumbs){
+angular.module('serviceofferings').controller('ServiceOfferingsListCtrl', ['$scope', 'ServiceOfferings', 'Breadcrumbs', function($scope, ServiceOfferings, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('serviceofferings', '/#/serviceofferings');
-    $scope.dictionary = Dictionary;
     $scope.collection = ServiceOfferings.fetch();
     $scope.toDisplay = ['name', 'displaytext'];
 }]);

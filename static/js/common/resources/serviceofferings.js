@@ -1,7 +1,7 @@
-angular.module('resources.serviceofferings', ['services.helperfunctions']);
-angular.module('resources.serviceofferings').factory('ServiceOfferings', ['$http', 'ServiceOffering', 'makeArray', function($http, ServiceOffering, makeArray){
+angular.module('resources.serviceofferings', ['services.helperfunctions', 'services.requester']);
+angular.module('resources.serviceofferings').factory('ServiceOfferings', ['$http', 'ServiceOffering', 'makeArray', 'requester', function($http, ServiceOffering, makeArray, requester){
     this.fetch = function(){
-        return $http.get('/api/serviceofferings').then(function(response){
+        return requester.get('listServiceOfferings').then(function(response){
             return response.data.listserviceofferingsresponse.serviceoffering;
         }).then(makeArray(ServiceOffering));
     };
@@ -10,7 +10,6 @@ angular.module('resources.serviceofferings').factory('ServiceOfferings', ['$http
 
 angular.module('resources.serviceofferings').factory('ServiceOffering', function(){
     var ServiceOffering = function(attrs){
-        angular.extend(this, {});
         angular.extend(this, attrs);
     }
     return ServiceOffering;

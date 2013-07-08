@@ -1,7 +1,7 @@
-angular.module('resources.events', ['services.helperfunctions']);
-angular.module('resources.events').factory('Events', ['$http', 'Event', 'makeArray', function($http, Event, makeArray){
+angular.module('resources.events', ['services.helperfunctions', 'services.requester']);
+angular.module('resources.events').factory('Events', ['$http', 'Event', 'makeArray', 'requester', function($http, Event, makeArray, requester){
     this.fetch = function(){
-        return $http.get('/api/events').then(function(response){
+        return requester.get('listEvents').then(function(response){
             return response.data.listeventsresponse.event;
         }).then(makeArray(Event));
     }
@@ -10,8 +10,6 @@ angular.module('resources.events').factory('Events', ['$http', 'Event', 'makeArr
 
 angular.module('resources.events').factory('Event', function(){
     var Event = function(attrs){
-        angular.extend(this,{
-        })
         angular.extend(this, attrs);
     }
     return Event;

@@ -1,7 +1,7 @@
-angular.module('resources.domains', ['services.helperfunctions']);
-angular.module('resources.domains').factory('Domains', ['$http', 'Domain', 'makeArray', function($http, Domain, makeArray){
+angular.module('resources.domains', ['services.helperfunctions', 'services.requester']);
+angular.module('resources.domains').factory('Domains', ['$http', 'Domain', 'makeArray', 'requester', function($http, Domain, makeArray, requester){
     this.fetch = function(){
-        return $http.get('/api/domains').then(function(response){
+        return requester.get('listDomains').then(function(response){
             return response.data.listdomainsresponse.domain;
         }).then(makeArray(Domain));
     };
@@ -10,9 +10,6 @@ angular.module('resources.domains').factory('Domains', ['$http', 'Domain', 'make
 
 angular.module('resources.domains').factory('Domain', function(){
     var Domain = function(attrs){
-        angular.extend(this, {
-            //helper functions
-        })
         angular.extend(this, attrs);
     }
     return Domain;

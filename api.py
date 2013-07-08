@@ -15,8 +15,7 @@ def get_command(verb, subject):
             return command["name"]
     return None
 
-def apicall(verb, subject, data):
-    command = get_command(verb, subject)
+def apicall(command, data ):
     response, error = make_request(command, data, None, host, port, apikey, secretkey, protocol, path)
     if error is not None:
         return error, get_error_code(error)

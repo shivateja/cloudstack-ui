@@ -1,4 +1,15 @@
-angular.module("cloudstack",["instances", "storage", "networks", "events", "accounts", "domains", "globalsettings", "serviceofferings", "services.breadcrumbs"]).
+angular.module('cloudstack', [
+        'instances',
+        'storage',
+        'networks',
+        'events',
+        'accounts',
+        'domains',
+        'projects',
+        'globalsettings', 
+        'serviceofferings',
+        'services.breadcrumbs'
+        ]).
 config(["$routeProvider", function($routeProvider){
     $routeProvider.
     when('/',{

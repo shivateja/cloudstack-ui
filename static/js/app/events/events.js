@@ -7,10 +7,9 @@ config(['$routeProvider', function($routeProvider){
     })
 }]);
 
-angular.module('events').controller('EventsListCtrl', ['$scope', 'Events', 'Dictionary', 'Breadcrumbs', function($scope, Events, Dictionary, Breadcrumbs){
+angular.module('events').controller('EventsListCtrl', ['$scope', 'Events', 'Breadcrumbs', function($scope, Events, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('events', '/#/events');
-    $scope.dictionary = Dictionary;
     $scope.collection = Events.fetch();
     $scope.toDisplay = ['type', 'description', 'account', 'created'];
 }]);

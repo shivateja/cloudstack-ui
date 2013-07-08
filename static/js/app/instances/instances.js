@@ -7,12 +7,9 @@ config(['$routeProvider', function($routeProvider){
     })
 }]);
 
-angular.module("instances").controller("VirtualMachinesListCtrl", ["$scope", "VirtualMachines", "Dictionary", "Breadcrumbs", 
-        function($scope, VirtualMachines, Dictionary, Breadcrumbs){
+angular.module("instances").controller("VirtualMachinesListCtrl", ["$scope", "VirtualMachines", "Breadcrumbs", function($scope, VirtualMachines, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('instances', '/#/instances');
-    VirtualMachines.fetch().then(function(collection){
-        $scope.collection = collection;
-    });
+    $scope.collection = VirtualMachines.fetch();
     $scope.toDisplay = ["displayname", "instancename", "zonename", "state"];
 }]);

@@ -7,10 +7,9 @@ config(['$routeProvider', function($routeProvider){
     })
 }]);
 
-angular.module('domains').controller('DomainsListCtrl', ['$scope', 'Domains', 'Dictionary', 'Breadcrumbs', function($scope, Domains, Dictionary, Breadcrumbs){
+angular.module('domains').controller('DomainsListCtrl', ['$scope', 'Domains', 'Breadcrumbs', function($scope, Domains, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('domains', '/#/domains');
-    $scope.dictionary = Dictionary;
     $scope.collection = Domains.fetch();
     $scope.toDisplay = ['id', 'name'];
 }]);

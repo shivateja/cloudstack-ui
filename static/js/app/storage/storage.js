@@ -7,10 +7,9 @@ config(['$routeProvider', function($routeProvider){
     })
 }]);
 
-angular.module("storage").controller("VolumesListCtrl", ["$scope", "Volumes", "Dictionary", "Breadcrumbs", function($scope, Volumes, Dictionary, Breadcrumbs){
+angular.module("storage").controller("VolumesListCtrl", ["$scope", "Volumes", "Breadcrumbs", function($scope, Volumes, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('storage', '/#/storage');
-    $scope.dictionary = Dictionary;
     $scope.collection = Volumes.fetch();
     $scope.toDisplay = ['name', 'type', 'hypervisor', 'vmdisplayname'];
 }]);

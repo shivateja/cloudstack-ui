@@ -3,14 +3,17 @@ from api import apicall
 
 app = Flask(__name__)
 
-@app.route('/api/<subject>', methods=['GET', 'PUT'])
-def onlysubject(subject):
-    #assert verb is "list"
+def get_args(multidict):
+    """Default type of request.args or request.json is multidict. Converts it to dict so that can be passed to make_request"""
+    data = {}
+    for key in multidict.keys():
+        data[key] = multidict.get(key)
+    return data
+
+@app.route('/api/<command>', methods=['GET'])
+def rawapi(command):
     if request.method == 'GET':
-        return apicall("list", subject, None)
-    #assert subject is "user"
-    if request.method == 'PUT':
-        return apicall("update", "user", request.json)
+        return apicall(command, get_args(request.args))
 
 @app.route('/')
 def index():

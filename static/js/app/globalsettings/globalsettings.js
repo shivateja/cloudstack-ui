@@ -7,11 +7,9 @@ config(['$routeProvider', function($routeProvider){
     })
 }]);
 
-angular.module('globalsettings').controller('ConfigurationsListCtrl', ['$scope', 'Configurations', 'Dictionary', 'Breadcrumbs',
-        function($scope, Configurations, Dictionary, Breadcrumbs){
+angular.module('globalsettings').controller('ConfigurationsListCtrl', ['$scope', 'Configurations', 'Breadcrumbs', function($scope, Configurations, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('configurations', '/#/configurations');
-    $scope.dictionary = Dictionary;
     $scope.collection = Configurations.fetch();
     $scope.toDisplay = ['name', 'description', 'value'];
 }]);
