@@ -3,13 +3,18 @@ config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/serviceofferings', {
         controller: 'ServiceOfferingsListCtrl',
-        templateUrl: 'table.html'
+        templateUrl: 'table.html',
+        resolve: {
+            serviceofferings: function(ServiceOfferings){
+                return ServiceOfferings.fetch();
+            }
+        }
     })
 }]);
 
-angular.module('serviceofferings').controller('ServiceOfferingsListCtrl', ['$scope', 'ServiceOfferings', 'Breadcrumbs', function($scope, ServiceOfferings, Breadcrumbs){
+angular.module('serviceofferings').controller('ServiceOfferingsListCtrl', ['$scope', 'serviceofferings', 'Breadcrumbs', function($scope, serviceofferings, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('serviceofferings', '/#/serviceofferings');
-    $scope.collection = ServiceOfferings.fetch();
+    $scope.collection = serviceofferings
     $scope.toDisplay = ['name', 'displaytext'];
 }]);

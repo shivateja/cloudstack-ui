@@ -3,13 +3,18 @@ config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/storage',{
         controller: 'VolumesListCtrl',
-        templateUrl: 'table.html'
+        templateUrl: 'table.html',
+        resolve: {
+            volumes: function(Volumes){
+                return Volumes.fetch();
+            }
+        }
     })
 }]);
 
-angular.module("storage").controller("VolumesListCtrl", ["$scope", "Volumes", "Breadcrumbs", function($scope, Volumes, Breadcrumbs){
+angular.module("storage").controller("VolumesListCtrl", ["$scope", "volumes", "Breadcrumbs", function($scope, volumes, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('storage', '/#/storage');
-    $scope.collection = Volumes.fetch();
+    $scope.collection = volumes;
     $scope.toDisplay = ['name', 'type', 'hypervisor', 'vmdisplayname'];
 }]);

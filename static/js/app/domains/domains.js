@@ -3,13 +3,18 @@ config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/domains',{
         controller: 'DomainsListCtrl',
-        templateUrl: 'table.html'
+        templateUrl: 'table.html',
+        resolve: {
+            domains: function(Domains){
+                return Domains.fetch();
+            }
+        }
     })
 }]);
 
-angular.module('domains').controller('DomainsListCtrl', ['$scope', 'Domains', 'Breadcrumbs', function($scope, Domains, Breadcrumbs){
+var DomainsListCtrl = angular.module('domains').controller('DomainsListCtrl', ['$scope', 'domains', 'Breadcrumbs', function($scope, domains, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('domains', '/#/domains');
-    $scope.collection = Domains.fetch();
+    $scope.collection = domains;
     $scope.toDisplay = ['id', 'name'];
 }]);

@@ -3,13 +3,18 @@ config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/networks',{
         controller: 'NetworksListCtrl',
-        templateUrl: 'table.html'
+        templateUrl: 'table.html',
+        resolve: {
+            networks: function(Networks){
+                return Networks.fetch();
+            }
+        }
     })
 }]);
 
-angular.module('networks').controller('NetworksListCtrl', ['$scope', 'Networks', 'Breadcrumbs', function($scope, Networks, Breadcrumbs){
+angular.module('networks').controller('NetworksListCtrl', ['$scope', 'networks', 'Breadcrumbs', function($scope, networks, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('networks', '/#/networks');
-    $scope.collection = Networks.fetch();
+    $scope.collection = networks;
     $scope.toDisplay = ['name', 'type', 'zonename'];
 }]);

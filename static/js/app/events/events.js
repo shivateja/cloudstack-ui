@@ -3,13 +3,18 @@ config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/events', {
         controller: 'EventsListCtrl',
-        templateUrl: 'table.html'
+        templateUrl: 'table.html',
+        resolve: {
+            events: function(Events){
+                return Events.fetch();
+            }
+        }
     })
 }]);
 
-angular.module('events').controller('EventsListCtrl', ['$scope', 'Events', 'Breadcrumbs', function($scope, Events, Breadcrumbs){
+angular.module('events').controller('EventsListCtrl', ['$scope', 'events', 'Breadcrumbs', function($scope, events, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('events', '/#/events');
-    $scope.collection = Events.fetch();
+    $scope.collection = events;
     $scope.toDisplay = ['type', 'description', 'account', 'created'];
 }]);

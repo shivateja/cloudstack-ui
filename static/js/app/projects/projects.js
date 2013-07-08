@@ -3,13 +3,18 @@ config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/projects', {
         controller: 'ProjectsListCtrl',
-        templateUrl: 'table.html'
+        templateUrl: 'table.html',
+        resolve: {
+            projects: function(Projects){
+                return Projects.fetch();
+            }
+        }
     })
 }]);
 
-angular.module('projects').controller('ProjectsListCtrl', ['$scope', 'Projects', 'Breadcrumbs', function($scope, Projects, Breadcrumbs){
+angular.module('projects').controller('ProjectsListCtrl', ['$scope', 'projects', 'Breadcrumbs', function($scope, projects, Breadcrumbs){
     Breadcrumbs.refresh();
     Breadcrumbs.push('projects', '/#/projects');
-    $scope.collection = Projects.fetch();
+    $scope.collection = projects;
     $scope.toDisplay = ['name', 'displaytext', 'domain', 'account', 'state']
 }]);
