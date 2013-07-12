@@ -3,7 +3,7 @@ config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/instances', {
         controller: 'VirtualMachinesListCtrl',
-        templateUrl: 'table.html',
+        templateUrl: '/static/js/app/instances/instances.tpl.html',
         resolve:{
             virtualmachines : function(VirtualMachines){
                 return VirtualMachines.fetch();

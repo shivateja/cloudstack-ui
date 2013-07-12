@@ -1,0 +1,34 @@
+<div class="well well-small form-inline">
+    <input type="text" placeholder="Search" class="input-medium search-query" ng-model="search.displayname">
+    <label>
+        Display only:
+        <select ng-model="search.state">
+            <option value="">All</option>
+            <option value="Stopped">Stopped</option>
+            <option value="Running">Running</option>
+            <option value="Destroyed">Destroyed</option>
+        </select>
+    </label>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th ng-repeat="attribute in toDisplay"> {{dictionary.labels[attribute]}} </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="model in collection | filter:search">
+            <td>{{model.displayname}}</td>
+            <td>{{model.instancename}}</td>
+            <td>{{model.zonename}}</td>
+            <td>{{model.state}}</td>
+            <td>
+                <i class="icon-play" ng-click="model.start()"></i>
+                <i class="icon-ban-circle" ng-click="model.stop()"></i>
+                <i class="icon-repeat" ng-click="model.reboot()"></i>
+                <i class="icon-remove" ng-click="model.destroy()"></i>
+            </td>
+        </tr>
+    </tbody>
+</table>
