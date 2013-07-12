@@ -33,6 +33,7 @@ angular.module('cloudstack').factory("Dictionary", function(){
             configurations: 'Global Settings',
             serviceofferings: 'Service Offerings',
             home: 'Home',
+            projects: 'Projects',
         }
     };
     return dictionary;
