@@ -18,6 +18,7 @@
       }
     </style>
     <link href="static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="static/css/app.css" rel="stylesheet">
  
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -27,6 +28,8 @@
 </head>
  
 <body ng-controller="AppCtrl">
+    <div class="loading" ng-show="loading">
+    </div>
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">

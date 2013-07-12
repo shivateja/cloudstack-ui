@@ -25,9 +25,18 @@ angular.module("cloudstack").controller("DefaultCtrl", ["$scope", "Breadcrumbs",
     Breadcrumbs.refresh();
 }]);
 
-angular.module("cloudstack").controller("AppCtrl", ["$scope", "Breadcrumbs", "Dictionary", function($scope, Breadcrumbs, Dictionary){
+angular.module("cloudstack").controller("AppCtrl", ["$scope", "Breadcrumbs", "Dictionary", "$rootScope", function($scope, Breadcrumbs, Dictionary, $rootScope){
     $scope.breadcrumbs = Breadcrumbs;
     $scope.dictionary = Dictionary;
+    $scope.loading = false;
+
+    $rootScope.$on("$routeChangeStart", function(event, next, current){
+        $scope.loading = true;
+    });
+
+    $rootScope.$on("$routeChangeSuccess", function(event, current, previous){
+        $scope.loading = false;
+    });
 }]);
 
 angular.module("cloudstack").controller("HeaderCtrl", ["$scope", function($scope){
