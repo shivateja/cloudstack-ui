@@ -1,3 +1,15 @@
+body {
+    padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+}
+
+.sidebar-nav {
+    padding: 9px 0;
+}
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
+
 div.loading {
   position: fixed;
   width: 50px;
