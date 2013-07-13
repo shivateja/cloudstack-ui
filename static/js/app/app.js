@@ -1,4 +1,5 @@
 angular.module('cloudstack', [
+        'ui.bootstrap',
         'instances',
         'storage',
         'networks',
@@ -8,7 +9,8 @@ angular.module('cloudstack', [
         'projects',
         'globalsettings', 
         'serviceofferings',
-        'services.breadcrumbs'
+        'services.breadcrumbs',
+        'directives.confirm'
         ]).
 config(["$routeProvider", function($routeProvider){
     $routeProvider.

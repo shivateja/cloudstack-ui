@@ -24,10 +24,10 @@
             <td>{{model.zonename}}</td>
             <td>{{model.state}}</td>
             <td>
-                <i class="icon-play" ng-click="model.start()"></i>
-                <i class="icon-ban-circle" ng-click="model.stop()"></i>
-                <i class="icon-repeat" ng-click="model.reboot()"></i>
-                <i class="icon-remove" ng-click="model.destroy()"></i>
+                <confirm onok="model.start()"><i class="icon-play"></i></confirm>
+                <confirm onok="model.stop()"><i class="icon-ban-circle"></i></confirm>
+                <confirm onok="model.reboot()"><i class="icon-repeat"></i></confirm>
+                <confirm onok="model.destroy()"><i class="icon-remove"></i></confirm>
             </td>
         </tr>
     </tbody>
