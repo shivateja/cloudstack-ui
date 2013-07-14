@@ -18,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="model in collection | filter:search">
+        <tr ng-repeat="model in collection | filter:search" ng-controller="VirtualMachineItemCtrl">
             <td>{{model.displayname}}</td>
             <td>{{model.instancename}}</td>
             <td>{{model.zonename}}</td>

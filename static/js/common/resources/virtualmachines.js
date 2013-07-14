@@ -22,6 +22,7 @@ angular.module('resources.virtualmachines').factory('VirtualMachine', ['requeste
     };
     VirtualMachine.prototype.stop = function(){
         var self = this;
+        self.state = 'Stopping'
         requester.async('stopVirtualMachine', {id : self.id}).then(function(response){
             self.state = 'Stopped';
         });
