@@ -48,6 +48,9 @@
                 </ul>
             </div>
             <div class="span10">
+                <div class="notifications">
+                    <alert ng-repeat="notification in notifications.getAll()" type="notification.type" close="notifications.remove(notification)">{{notification.msg}}</alert>
+                </div>
                 <ul class="breadcrumb">
                     <!--breadcrumbs is in AppCtrl-->
                     <li ng-repeat="breadcrumb in breadcrumbs.getAll()">
@@ -108,6 +111,7 @@
     <script type="text/javascript" src="static/js/common/services/breadcrumbs.js"></script>
     <script type="text/javascript" src="static/js/common/services/helperfunctions.js"></script>
     <script type="text/javascript" src="static/js/common/services/requester.js"></script>
+    <script type="text/javascript" src="static/js/common/services/notifications.js"></script>
     <script type="text/javascript" src="static/js/common/directives/confirm.js"></script>
     <script type="text/javascript" src="static/js/common/dictionary.js"></script>
     <script type="text/javascript" src="static/js/lib/angular-ui.min.js"></script>

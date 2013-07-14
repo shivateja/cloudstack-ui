@@ -1,4 +1,4 @@
-angular.module("instances", ['resources.virtualmachines', 'services.breadcrumbs']).
+angular.module("instances", ['resources.virtualmachines', 'services.breadcrumbs', 'services.notifications']).
 config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/instances', {
@@ -13,10 +13,17 @@ config(['$routeProvider', function($routeProvider){
 }]);
 
 angular.module("instances").controller("VirtualMachinesListCtrl", 
-        ["$scope", "virtualmachines", "Breadcrumbs", function($scope, virtualmachines, Breadcrumbs){
+        ["$scope", "virtualmachines", "Breadcrumbs", "Notifications", function($scope, virtualmachines, Breadcrumbs, Notifications){
     Breadcrumbs.refresh();
     Breadcrumbs.push('instances', '/#/instances');
     $scope.collection = virtualmachines;
     $scope.toDisplay = ["displayname", "instancename", "zonename", "state"];
+
+    $scope.$watch('collection', function(newValue, oldValue){
+        if(newValue === oldValue){
+            return; //workaround to stop initial call
+        }
+        Notifications.push('success', 'Something happened to a vm');
+    }, true);
 }]);
 

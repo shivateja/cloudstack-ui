@@ -10,6 +10,7 @@ angular.module('cloudstack', [
         'globalsettings', 
         'serviceofferings',
         'services.breadcrumbs',
+        'services.notifications',
         'directives.confirm'
         ]).
 config(["$routeProvider", function($routeProvider){
@@ -27,9 +28,12 @@ angular.module("cloudstack").controller("DefaultCtrl", ["$scope", "Breadcrumbs",
     Breadcrumbs.refresh();
 }]);
 
-angular.module("cloudstack").controller("AppCtrl", ["$scope", "Breadcrumbs", "Dictionary", "$rootScope", function($scope, Breadcrumbs, Dictionary, $rootScope){
+angular.module("cloudstack").controller("AppCtrl", ["$scope", "Breadcrumbs", "Notifications", "Dictionary", "$rootScope", 
+        function($scope, Breadcrumbs, Notifications, Dictionary, $rootScope){
     $scope.breadcrumbs = Breadcrumbs;
     $scope.dictionary = Dictionary;
+    $scope.notifications = Notifications;
+
     $scope.loading = false;
 
     $rootScope.$on("$routeChangeStart", function(event, next, current){
