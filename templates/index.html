@@ -21,12 +21,12 @@
  
 <body ng-controller="AppCtrl" ng-cloak>
     <!-- Temporary ajax loader-->
-    <div class="loading" ng-show="loading">
-    </div>
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container">
-                <a class="brand" ng-href="/#/">CloudStack</a>
+                <a class="brand" ng-href="/#/">
+                    <span>CloudStack <img ng-show="loading" src="static/images/ajax-inverse.gif" width="17px" height="17px"></span>
+                </a>
             </div>
         </div>
     </div>
