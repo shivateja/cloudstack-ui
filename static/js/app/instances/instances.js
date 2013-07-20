@@ -6,7 +6,16 @@ config(['$routeProvider', function($routeProvider){
         templateUrl: '/static/js/app/instances/instances.tpl.html',
         resolve:{
             virtualmachines : function(VirtualMachines){
-                return VirtualMachines.fetch();
+                return VirtualMachines.getAll();
+            }
+        }
+    }).
+    when('/instances/:id', {
+        controller: 'VirtualMachineDetailCtrl',
+        templateUrl: '/static/js/app/instances/instance-details.tpl.html',
+        resolve: {
+            virtualmachine: function($route, VirtualMachines){
+                return VirtualMachines.getById($route.current.params.id);
             }
         }
     })
@@ -15,19 +24,14 @@ config(['$routeProvider', function($routeProvider){
 angular.module("instances").controller("VirtualMachinesListCtrl", 
         ["$scope", "virtualmachines", "Breadcrumbs", "Notifications", function($scope, virtualmachines, Breadcrumbs, Notifications){
     Breadcrumbs.refresh();
-    Breadcrumbs.push('instances', '/#/instances');
+    Breadcrumbs.push('Instances', '/#/instances');
     $scope.collection = virtualmachines;
     $scope.toDisplay = ["displayname", "instancename", "zonename", "state"];
 }]);
 
-angular.module("instances").controller("VirtualMachineItemCtrl", ["$scope", "Notifications", function($scope, Notifications){
-    //This is used to send appropriate notifications for virtualmachine model changes
-    var finalStates = ['Running', 'Stopped', 'Destroyed']
-    $scope.$watch('collection[$index]', function(newval, oldval, scope){
-        if(newval === oldval) return;
-        if(finalStates.indexOf(newval.state) > -1){
-            //Notify only for final state changes
-            Notifications.push('success', 'Virtual Machine ' + newval.displayname + ' is ' + newval.state);
-        };
-    }, true);
+angular.module("instances").controller("VirtualMachineDetailCtrl", ["$scope", "virtualmachine", "Breadcrumbs", function($scope, virtualmachine, Breadcrumbs){
+    Breadcrumbs.refresh();
+    Breadcrumbs.push('Instances', '/#/instances');
+    Breadcrumbs.push(virtualmachine.displayname, '/#/instances/'+ virtualmachine.id);
+    $scope.model = virtualmachine;
 }]);

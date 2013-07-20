@@ -54,8 +54,8 @@
                 <ul class="breadcrumb">
                     <!--breadcrumbs is in AppCtrl-->
                     <li ng-repeat="breadcrumb in breadcrumbs.getAll()">
-                        <a ng-hide="$last" href="{{breadcrumb.url}}">{{dictionary.labels[breadcrumb.id]}}</a>
-                        <span ng-show="$last">{{dictionary.labels[breadcrumb.id]}}</span>
+                        <a ng-hide="$last" href="{{breadcrumb.url}}">{{breadcrumb.name}}</a>
+                        <span ng-show="$last">{{breadcrumb.name}}</span>
                         <span class="divider" ng-hide="$last">/</span>
                     </li>
                 </ul>

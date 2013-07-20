@@ -3,10 +3,10 @@ angular.module('services.breadcrumbs').factory('Breadcrumbs', ['$rootScope', '$l
     var breadcrumbs = [{id:'home', url:'/#/'}];
     var Breadcrumbs = {};
     Breadcrumbs.refresh = function(){
-        breadcrumbs = [{id:'home', url:'/#/'}];
+        breadcrumbs = [{name:'Home', url:'/#/'}];
     };
-    Breadcrumbs.push = function(id, url){
-        breadcrumbs.push({id: id, url: url})
+    Breadcrumbs.push = function(name, url){
+        breadcrumbs.push({name: name, url: url})
     };
     Breadcrumbs.getAll = function(){
         return breadcrumbs;

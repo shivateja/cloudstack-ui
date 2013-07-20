@@ -11,3 +11,12 @@ angular.module('services.helperfunctions').factory('makeArray', function(){
     }
     return makeArray;
 });
+
+angular.module('services.helperfunctions').factory('makeInstance', function(){
+    var makeInstance = function(Type){
+        return function(response){
+            return new Type(response);
+        }
+    }
+    return makeInstance;
+});

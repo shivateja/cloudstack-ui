@@ -1,11 +1,18 @@
 angular.module('resources.virtualmachines',['services.helperfunctions', 'services.requester']);
 angular.module('resources.virtualmachines').factory('VirtualMachines',
-        ['$http', 'VirtualMachine', 'makeArray', 'requester', function($http, VirtualMachine, makeArray, requester){
-    this.fetch = function(){
+        ['$http', 'VirtualMachine', 'makeArray', 'makeInstance', 'requester', function($http, VirtualMachine, makeArray, makeInstance, requester){
+    this.getAll = function(){
         return requester.get('listVirtualMachines').then(function(response){
             return response.data.listvirtualmachinesresponse.virtualmachine;
         }).then(makeArray(VirtualMachine));
     };
+
+    this.getById = function(id){
+        return requester.get('listVirtualMachines', {id: id}).then(function(response){
+            return response.data.listvirtualmachinesresponse.virtualmachine[0];
+        }).then(makeInstance(VirtualMachine));
+    };
+
     return this;
 }]);
 
