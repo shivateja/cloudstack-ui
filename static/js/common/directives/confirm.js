@@ -13,10 +13,10 @@ angular.module('directives.confirm').directive('confirm',['$dialog', function($d
                 scope.$apply(function(){
                     msgbox.open().then(function(result){
                         if(result === 'yes'){
-                            if(attrs.onok) scope.$eval(attrs.onok);
+                            if(attrs.onOk) scope.$eval(attrs.onOk);
                         }
                         if(result === 'no'){
-                            if(attrs.oncancel) scope.$eval(attrs.oncancel);
+                            if(attrs.onCancel) scope.$eval(attrs.onCancel);
                         }
                     });
                 });
