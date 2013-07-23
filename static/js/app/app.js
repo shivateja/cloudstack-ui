@@ -11,7 +11,8 @@ angular.module('cloudstack', [
         'serviceofferings',
         'services.breadcrumbs',
         'services.notifications',
-        'directives.confirm'
+        'directives.confirm',
+        'directives.modalForm',
         ]).
 config(["$routeProvider", function($routeProvider){
     $routeProvider.
