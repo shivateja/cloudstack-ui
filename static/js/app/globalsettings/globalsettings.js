@@ -3,7 +3,7 @@ config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/configurations', {
         controller: 'ConfigurationsListCtrl',
-        templateUrl: 'table.html',
+        templateUrl: '/static/js/app/globalsettings/globalsettings.tpl.html',
         resolve: {
             configurations: function(Configurations){
                 return Configurations.fetch();

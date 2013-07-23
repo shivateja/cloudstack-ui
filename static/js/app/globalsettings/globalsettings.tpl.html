@@ -1,0 +1,16 @@
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>{{dictionary.labels.name}} </th>
+            <th>{{dictionary.labels.value}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="model in collection">
+            <td>
+                <span tooltip="{{model.description}}">{{model.name}}</span>
+            </td>
+            <td>{{model.value}}</td>
+        </tr>
+    </tbody>
+</table>
