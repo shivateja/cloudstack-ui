@@ -1,4 +1,4 @@
-angular.module("storage", ["resources.volumes", "resources.snapshots", "services.breadcrumbs"]).
+angular.module("storage", ["resources.volumes", "resources.snapshots", "resources.zones", "resources.diskofferings", "services.breadcrumbs"]).
 config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/volumes',{
@@ -21,12 +21,50 @@ config(['$routeProvider', function($routeProvider){
     })
 }]);
 
-angular.module("storage").controller("VolumesListCtrl", ["$scope", "$location", "volumes", "Breadcrumbs", function($scope, $location, volumes, Breadcrumbs){
+angular.module("storage").controller("VolumesListCtrl", ["$scope", "$location", "volumes", "Breadcrumbs", "Volumes", "Zones", "DiskOfferings",
+        function($scope, $location, volumes, Breadcrumbs, Volumes, Zones, DiskOfferings){
     Breadcrumbs.refresh();
     Breadcrumbs.push('Volumes', '/#/volumes');
     $scope.collection = volumes;
     $scope.view = 'volumes';
     $scope.toDisplay = ['name', 'type', 'hypervisor', 'vmdisplayname'];
+
+    $scope.uploadVolumesForm = {
+        title: 'Upload Volume',
+        onSubmit: Volumes.getAll,
+        fields: [
+            {
+                model: 'name',
+                type: 'input',
+                label: 'name',
+                required: true
+            },
+            {
+                model: 'zoneid',
+                type: 'select',
+                label: 'availabilityZone',
+                options: Zones.getAll,
+                getValue: function(model){
+                    return model.id;
+                },
+                getName: function(model){
+                    return model.name;
+                }
+            },
+            {
+                model: 'diskofferingid',
+                type: 'select',
+                label: 'diskoffering',
+                options: DiskOfferings.getAll,
+                getValue: function(model){
+                    return model.id;
+                },
+                getName: function(model){
+                    return model.name;
+                }
+            }
+        ]
+    };
 
     $scope.$watch('view', function(newVal, oldVal){
         if(newVal === oldVal) return;

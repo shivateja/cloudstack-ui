@@ -1,15 +1,5 @@
 angular.module('directives.modalForm', ['ui.bootstrap.dialog']);
 angular.module('directives.modalForm').directive('modalForm', ['$dialog', function($dialog){
-  var modalTemplate = '<div class="modal-header">'+
-          '<h3>{{title}}</h3>'+
-          '</div>'+
-          '<div class="modal-body">'+
-          '<div ng-include="template"></div>'+
-          '</div>'+
-          '<div class="modal-footer">'+
-          '<button ng-click="close()" class="btn">{{cancelText || "Cancel"}}</button>'+
-          '<button ng-click="submit()" class="btn btn-primary">{{okButtonText || "Submit"}}</button>'+
-          '</div>';
     return {
         restrict: 'EA',
         transclude: true,
@@ -18,22 +8,20 @@ angular.module('directives.modalForm').directive('modalForm', ['$dialog', functi
             title: '@',
             onSubmit: '&',
             template: '@',
+            formDetails: '='
         },
         link: function(scope, element, attrs){
             var opts = {
                 backdrop: true,
                 backdropClick: true,
                 backdropFade: true,
-                template: modalTemplate,
+                templateUrl: '/static/js/common/directives/modal-form.tpl.html',
                 resolve: {
-                    template: function(){
-                        return scope.template;
-                    },
-                    title: function(){
-                        return scope.title;
+                    formDetails: function(){
+                        return scope.formDetails;
                     }
                 },
-                controller: 'TestCtrl',
+                controller: 'FormCtrl',
             }
             element.bind('click', function(){
                 var formDialog = $dialog.dialog(opts);
@@ -42,22 +30,24 @@ angular.module('directives.modalForm').directive('modalForm', ['$dialog', functi
                     dialogPromise = formDialog.open()
                 });
                 dialogPromise.then(function(result){
-                    if(result){
-                        alert('dialog closed with result: ' + result);
-                    }
+                    if(result) scope.formDetails.onSubmit();
                 });
             });
         }
     }
 }]);
 
-angular.module('directives.modalForm').controller('TestCtrl', ['$scope', 'dialog', 'template', 'title',
-        function TestDialogController($scope, dialog, template, title){
+angular.module('directives.modalForm').controller('FormCtrl', ['$scope', 'dialog', 'formDetails', 'Dictionary',
+        function TestDialogController($scope, dialog, formDetails, Dictionary){
+    $scope.dictionary = Dictionary;
     $scope.formObject = {};
-    $scope.template = template;
-    $scope.title = title;
-    console.log(template);
-    $scope.close = function(result){
-        dialog.close(result);
+    $scope.template = 'table.html';
+    $scope.formDetails = formDetails;
+    $scope.title = formDetails.title;
+    $scope.close = function(){
+        dialog.close();
+    };
+    $scope.submit = function(){
+        dialog.close($scope.formObject);
     };
 }]);

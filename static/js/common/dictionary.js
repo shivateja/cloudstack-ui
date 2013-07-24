@@ -36,6 +36,8 @@ angular.module('cloudstack').factory("Dictionary", function(){
             projects: 'Projects',
             volumename: 'Volume',
             intervaltype: 'Interval Type',
+            availabilityZone: 'Availability Zone',
+            diskoffering: 'Disk Offering',
         }
     };
     return dictionary;
