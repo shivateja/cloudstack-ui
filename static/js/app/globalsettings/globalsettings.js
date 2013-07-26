@@ -1,4 +1,4 @@
-angular.module('globalsettings', ['resources.configurations', 'services.breadcrumbs']).
+angular.module('globalsettings', ['resources.configurations', 'services.breadcrumbs', 'services.notifications']).
 config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/configurations', {
@@ -6,15 +6,16 @@ config(['$routeProvider', function($routeProvider){
         templateUrl: '/static/js/app/globalsettings/globalsettings.tpl.html',
         resolve: {
             configurations: function(Configurations){
-                return Configurations.fetch();
+                return Configurations.getAll();
             }
         }
     })
 }]);
 
-angular.module('globalsettings').controller('ConfigurationsListCtrl', ['$scope', 'configurations', 'Breadcrumbs', function($scope, configurations, Breadcrumbs){
+angular.module('globalsettings').controller('ConfigurationsListCtrl', ['$scope', 'configurations', 'Breadcrumbs', 'Notifications', 
+        function($scope, configurations, Breadcrumbs, Notifications){
     Breadcrumbs.refresh();
     Breadcrumbs.push('Configurations', '/#/configurations');
-    $scope.collection = configurations
+    $scope.collection = configurations;
     $scope.toDisplay = ['name', 'description', 'value'];
 }]);
