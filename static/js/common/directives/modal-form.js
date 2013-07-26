@@ -5,7 +5,6 @@ angular.module('directives.modalForm').directive('modalForm', ['$dialog', functi
         transclude: true,
         template: '<span ng-transclude></span>',
         scope: {
-            title: '@',
             onSubmit: '&',
             template: '@',
             formDetails: '='
@@ -30,7 +29,7 @@ angular.module('directives.modalForm').directive('modalForm', ['$dialog', functi
                     dialogPromise = formDialog.open()
                 });
                 dialogPromise.then(function(result){
-                    if(result) scope.formDetails.onSubmit();
+                    if(result) scope.formDetails.onSubmit(result);
                 });
             });
         }
@@ -40,6 +39,7 @@ angular.module('directives.modalForm').directive('modalForm', ['$dialog', functi
 angular.module('directives.modalForm').controller('FormCtrl', ['$scope', 'dialog', 'formDetails', 'Dictionary',
         function TestDialogController($scope, dialog, formDetails, Dictionary){
     $scope.dictionary = Dictionary;
+    //formObject will be passed into onSubmit when submit is clicked
     $scope.formObject = {};
     $scope.template = 'table.html';
     $scope.formDetails = formDetails;

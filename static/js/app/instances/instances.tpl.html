@@ -24,7 +24,7 @@
             </td>
             <td>{{model.instancename}}</td>
             <td>{{model.zonename}}</td>
-            <td>{{model.state}}</td>
+            <td><vm-state-label vm="model"></vm-state-label></td>
             <td>
                 <confirm on-ok="model.start()"><i class="icon-play"></i></confirm>
                 <confirm on-ok="model.stop()"><i class="icon-ban-circle"></i></confirm>

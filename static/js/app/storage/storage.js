@@ -29,13 +29,13 @@ angular.module("storage").controller("VolumesListCtrl", ["$scope", "$location", 
     $scope.view = 'volumes';
     $scope.toDisplay = ['name', 'type', 'hypervisor', 'vmdisplayname'];
 
-    $scope.uploadVolumesForm = {
-        title: 'Upload Volume',
+    $scope.addVolumeForm = {
+        title: 'Add Volume',
         onSubmit: Volumes.getAll,
         fields: [
             {
                 model: 'name',
-                type: 'input',
+                type: 'input-text',
                 label: 'name',
                 required: true
             },
@@ -65,6 +65,54 @@ angular.module("storage").controller("VolumesListCtrl", ["$scope", "$location", 
             }
         ]
     };
+
+    $scope.uploadVolumeForm = {
+        title: 'Upload Volume',
+        onSubmit: Volumes.getAll,
+        fields: [
+            {
+                model: 'name',
+                type: 'input-text',
+                label: 'name',
+            },
+            {
+                model: 'zoneid',
+                type: 'select',
+                label: 'availabilityZone',
+                options: Zones.getAll,
+                getValue: function(model){
+                    return model.id;
+                },
+                getName: function(model){
+                    return model.name;
+                }
+            },
+            {
+                model: 'format',
+                type: 'select',
+                label: 'format',
+                options: function(){
+                    return ['RAW', 'VHD', 'OVA', 'QCOW2'];
+                },
+                getValue: function(model){
+                    return model;
+                },
+                getName: function(model){
+                    return model;
+                }
+            },
+            {
+                model: 'url',
+                type: 'input-text',
+                label: 'url'
+            },
+            {
+                model: 'checksum',
+                type: 'input-text',
+                label: 'checksum'
+            }
+        ],
+    }
 
     $scope.$watch('view', function(newVal, oldVal){
         if(newVal === oldVal) return;

@@ -14,7 +14,7 @@ config(['$routeProvider', function($routeProvider){
 
 angular.module('globalsettings').controller('ConfigurationsListCtrl', ['$scope', 'configurations', 'Breadcrumbs', function($scope, configurations, Breadcrumbs){
     Breadcrumbs.refresh();
-    Breadcrumbs.push('configurations', '/#/configurations');
+    Breadcrumbs.push('Configurations', '/#/configurations');
     $scope.collection = configurations
     $scope.toDisplay = ['name', 'description', 'value'];
 }]);

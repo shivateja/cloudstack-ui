@@ -3,6 +3,7 @@ angular.module('cloudstack', [
         'instances',
         'storage',
         'networks',
+        'templates',
         'events',
         'accounts',
         'domains',
@@ -13,6 +14,8 @@ angular.module('cloudstack', [
         'services.notifications',
         'directives.confirm',
         'directives.modalForm',
+        'directives.label',
+        'directives.editInPlace',
         ]).
 config(["$routeProvider", function($routeProvider){
     $routeProvider.

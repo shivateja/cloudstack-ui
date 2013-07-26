@@ -1,3 +1,6 @@
+<div class="well well-small form-inline">
+    <input type="text" placeholder="Search" class="input-medium search-query" ng-model="search.name">
+</div>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -6,11 +9,11 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="model in collection">
+        <tr ng-repeat="model in collection | filter:search">
             <td>
                 <span tooltip="{{model.description}}">{{model.name}}</span>
             </td>
-            <td>{{model.value}}</td>
+            <td><edit-in-place model="model" to-edit="value"></edit-in-place></td>
         </tr>
     </tbody>
 </table>

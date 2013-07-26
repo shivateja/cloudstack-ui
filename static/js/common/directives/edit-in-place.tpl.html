@@ -1,0 +1,8 @@
+<span>
+    <span ng-hide="editing">{{model[toEdit]}}<button class="btn pull-right"><i class="icon-edit"></i></button></span>
+    <span ng-show="editing">
+        <input type="text" ng-model="model[toEdit]">
+        <button class="btn btn-success"><i class="icon-ok icon-white"></i></button>
+        <button class="btn"><i class="icon-ban-circle"></i></button>
+    </span>
+</span>

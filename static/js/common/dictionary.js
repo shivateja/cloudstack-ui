@@ -38,6 +38,13 @@ angular.module('cloudstack').factory("Dictionary", function(){
             intervaltype: 'Interval Type',
             availabilityZone: 'Availability Zone',
             diskoffering: 'Disk Offering',
+            format: 'Format',
+            url: 'URL',
+            checksum: 'MD5 Checksum',
+            password: 'Password',
+            email: 'Email',
+            firstname: 'First Name',
+            lastname: 'Last Name',
         }
     };
     return dictionary;
