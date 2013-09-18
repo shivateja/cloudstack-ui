@@ -1,6 +1,0 @@
-apikey='dEObmj1tqexdVmrPBRYiLoyfsZ25paZtfZlBZbygQO8SbBkdqPb74R94_xYAqE1SHiABz3TtzCmvF3XlbpLgnw'
-secretkey='_k9LREOlerJxy7IggSAk7fKLoDNEeJzb2izoLAfYJQ1cQGClmCe2zQXXOti0J-t1krEJQN9usT9ln50ab1H6sA'
-path='/client/api'
-host='10.6.1.181'
-port='8080'
-protocol='http'
