@@ -1,0 +1,11 @@
+<ul class="nav pull-right" ng-show="isAuthenticated()">
+  <li class="divider-vertical"></li>
+  <li>
+      <a href="#">{{currentUser.userfullname}}</a>
+  </li>
+  <li class="logout">
+      <form class="navbar-form">
+          <button class="btn logout" ng-click="logout()">Log out</button>
+      </form>
+  </li>
+</ul>

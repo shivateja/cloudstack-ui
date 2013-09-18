@@ -1,4 +1,6 @@
 <span>
+    <!--Deleted the license because there has to be exactly one node inside a directive's template and the license
+    comment makes it two-->
     <span ng-hide="editing">{{model[attribute]}}<button class="btn pull-right" ng-click="edit()"><i class="icon-edit"></i>Edit</button></span>
     <span ng-show="editing" class="form-inline">
         <input type="text" ng-model="model[attribute]">

@@ -1,11 +1,80 @@
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
 angular.module('resources.templates', ['services.helperfunctions', 'services.requester']);
-angular.module('resources.templates').factory('Templates', ['Template', 'makeArray', 'requester', function(Template, makeArray, requester){
-    this.getAll = function(){
+angular.module('resources.templates').factory('Templates', ['Template', 'makeArray', 'requester', 'setState', function(Template, makeArray, requester, setState){
+    var pagesize = 20;
+
+    var Templates = function(templates, state){
+        this.state = setState(state);
+        this.collection = templates;
+    };
+
+    //Class methods
+    Templates.prototype.list = function(){
+        return this.collection;
+    };
+
+    Templates.prototype.loadNextPage = function(){
+        var self = this;
+        var params = {
+            page: this.state.page + 1,
+            pagesize: pagesize,
+            templatefilter: this.state.templatefilter
+        };
+
+        if(this.state.keyword){
+            //keyword is defined
+            //Add it to params
+            params.keyword = this.state.keyword;
+        };
+        return requester.get('listTemplates', params)
+            .then(function(response){
+                return response.data.listtemplatesresponse.template;
+            }).then(makeArray(Template)).then(function(templates){
+                if(templates.length){
+                    self.state.page++;
+                    self.collection = self.collection.concat(templates);
+                };
+            });
+    };
+
+    //Static methods
+    Templates.getFirstPage = function(){
+        return requester.get('listTemplates', {
+            page: 1,
+            pagesize: pagesize,
+            templatefilter: 'all'
+        }).then(function(response){
+            return response.data.listtemplatesresponse.template;
+        }).then(makeArray(Template)).then(function(collection){
+            return new Templates(collection, {page: 1, templatefilter: 'all'});
+        });
+    }
+
+    Templates.getAll = function(){
         return requester.get('listTemplates', {templatefilter: 'all'}).then(function(response){
             return response.data.listtemplatesresponse.template;
-        }).then(makeArray(Template));
+        }).then(makeArray(Template)).then(function(collection){
+            return new Templates(collection);
+        });
     };
-    return this;
+
+    return Templates;
 }]);
 
 angular.module('resources.templates').factory('Template', function(){

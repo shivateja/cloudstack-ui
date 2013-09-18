@@ -1,3 +1,22 @@
+<!--
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements. See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership. The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License. You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied. See the License for the
+// specific language governing permissions and limitations
+// under the License.
+-->
+
 <!DOCTYPE html>
 <html lang="en" ng-app="cloudstack">
 <head>
@@ -8,9 +27,9 @@
     <meta name="author" content="">
  
     <!-- Le styles -->
-    <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="static/css/app.css" rel="stylesheet">
-    <link href="static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="static/lib/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
  
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -19,39 +38,25 @@
  
 </head>
  
-<body ng-controller="AppCtrl" ng-cloak>
-    <!-- Temporary ajax loader-->
+<body ng-controller="AppCtrl" ng-cloak ng-switch on="security.isAuthenticated()">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container-fluid">
                 <a class="brand" ng-href="/#/">
                     <span>CloudStack <img ng-show="loading" src="static/images/ajax-inverse.gif" width="17px" height="17px"></span>
                 </a>
+                <login-toolbar></login-toolbar>
             </div>
         </div>
     </div>
-    <div class="container-fluid"> 
+    <div class="container-fluid" ng-switch-when="true"> 
         <div class="row-fluid">
             <div class="span2" ng-controller="NavCtrl">
-                <ul class="nav nav-tabs nav-stacked">
-                    <li ng-class="isActive('/')"><a href="/#/" >Dashboard</a></li>
-                    <li ng-class="isActive('instances')"><a href="/#/instances">Instances</a></li>
-                    <li ng-class="isActive('volumes')"><a href="/#/volumes">Storage</a></li>
-                    <li ng-class="isActive('networks')"><a href="/#/networks">Networks</a></li>
-                    <li ng-class="isActive('templates')"><a href="/#/templates">Templates</a></li>
-                    <li ng-class="isActive('events')"><a href="/#/events">Events</a></li>
-                    <li ng-class="isActive('accounts')"><a href="/#/accounts">Accounts</a></li>
-                    <li ng-class="isActive('domains')"><a href="/#/domains">Domains</a></li>
-                    <li ng-class="isActive('infrastructure')"><a href="/#/infrastructure">Infrastructure</a></li>
-                    <li ng-class="isActive('projects')"><a href="/#/projects">Projects</a></li>
-                    <li ng-class="isActive('configurations')"><a href="/#/configurations">Global Settings</a></li>
-                    <li ng-class="isActive('serviceofferings')"><a href="/#/serviceofferings">Service Offerings</a></li>
+                <ul class="nav nav-tabs nav-stacked sidebar-nav-fixed">
+                    <li ng-repeat="plugin in plugins.listAll()" ng-class="isActive(plugin.url)"><a ng-href="{{'/#'+plugin.url}}">{{plugin.name}}</a></li>
                 </ul>
             </div>
             <div class="span10">
-                <div class="notifications">
-                    <alert ng-repeat="notification in notifications.getAll()" type="notification.type" close="notifications.remove(notification)">{{notification.msg}}</alert>
-                </div>
                 <ul class="breadcrumb">
                     <!--breadcrumbs is in AppCtrl-->
                     <li ng-repeat="breadcrumb in breadcrumbs.getAll()">
@@ -65,6 +70,19 @@
             </div>
         </div>
     </div> <!-- /container -->
+    <div class="container-fluid" ng-switch-when="false">
+        <div class="row-fluid">
+            <div class="span12 text-center">
+                <h1 style="margin-bottom:70px;">Sign in</h1>
+                <form novalidate name="form">
+                    <input type="text" class="input-xlarge" placeholder="Username" ng-model="username" style="margin-bottom:15px" required autofocus><br>
+                    <input type="password" class="input-xlarge" placeholder="Password" ng-model="password" required><br>
+                    <input type="text" class="input-xlarge" placeholder="Domain" ng-model="domain"><br>
+                    <button class="btn btn-primary login" ng-click="security.login(username, password, domain)" ng-disabled='form.$invalid'>Sign in</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script type="text/ng-template" id="default.html">
         <div style="text-align:center">
@@ -80,16 +98,17 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="model in collection">
+                <tr ng-repeat="model in collection.list()">
                     <td ng-repeat="attribute in toDisplay">{{model[attribute]}}</td>
                 </tr>
             </tbody>
         </table>
     </script>
 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-    <script type="text/javascript" src="http://code.angularjs.org/1.0.7/angular-resource.js"></script>
+    <script type="text/javascript" src="static/lib/jquery/jquery-1.7.2.js"></script>
+    <script type="text/javascript" src="static/lib/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="static/lib/angular/angular.js"></script>
+    <script type="text/javascript" src="static/lib/angular/ngInfiniteScroll.js"></script>
     <script type="text/javascript" src="static/js/app/app.js"></script>
     <script type="text/javascript" src="static/js/common/resources/virtualmachines.js"></script>
     <script type="text/javascript" src="static/js/app/instances/instances.js"></script>
@@ -111,18 +130,35 @@
     <script type="text/javascript" src="static/js/common/resources/serviceofferings.js"></script>
     <script type="text/javascript" src="static/js/common/resources/projects.js"></script>
     <script type="text/javascript" src="static/js/app/projects/projects.js"></script>
+    <script type="text/javascript" src="static/js/app/dashboard/dashboard.js"></script>
     <script type="text/javascript" src="static/js/common/resources/configurations.js"></script>
     <script type="text/javascript" src="static/js/common/services/breadcrumbs.js"></script>
     <script type="text/javascript" src="static/js/common/services/helperfunctions.js"></script>
     <script type="text/javascript" src="static/js/common/services/requester.js"></script>
     <script type="text/javascript" src="static/js/common/services/notifications.js"></script>
+    <script type="text/javascript" src="static/js/common/services/plugins.js"></script>
     <script type="text/javascript" src="static/js/common/directives/confirm.js"></script>
     <script type="text/javascript" src="static/js/common/directives/modal-form.js"></script>
     <script type="text/javascript" src="static/js/common/directives/label.js"></script>
     <script type="text/javascript" src="static/js/common/directives/edit-in-place.js"></script>
+    <script type="text/javascript" src="static/js/common/directives/chart.js"></script>
+    <script type="text/javascript" src="static/js/common/directives/doughnut-usage-chart.js"></script>
     <script type="text/javascript" src="static/js/common/dictionary.js"></script>
     <script type="text/javascript" src="static/js/common/resources/zones.js"></script>
     <script type="text/javascript" src="static/js/common/resources/diskofferings.js"></script>
-    <script type="text/javascript" src="static/js/lib/angular-ui.min.js"></script>
+    <script type="text/javascript" src="static/js/common/resources/capacity.js"></script>
+    <script type="text/javascript" src="static/js/common/security/security.js"></script>
+    <script type="text/javascript" src="static/js/common/security/authorization.js"></script>
+    <script type="text/javascript" src="static/js/common/security/interceptor.js"></script>
+    <script type="text/javascript" src="static/js/common/security/retryQueue.js"></script>
+    <script type="text/javascript" src="static/js/common/security/login/LoginFormController.js"></script>
+    <script type="text/javascript" src="static/js/common/security/login/login.js"></script>
+    <script type="text/javascript" src="static/js/common/security/login/toolbar.js"></script>
+    <script type="text/javascript" src="static/js/common/security/index.js"></script>
+    <script type="text/javascript" src="static/lib/angular/angular-ui.min.js"></script>
+    <script type="text/javascript" src="static/lib/angular/angular-cookies.js"></script>
+    <script type="text/javascript" src="static/lib/angular/md5.js"></script>
+    <script type="text/javascript" src="static/lib/misc/chart.js"></script>
+    <script type="text/javascript" src="static/lib/misc/bootstrap-growl.js"></script>
 </body>
 </html>

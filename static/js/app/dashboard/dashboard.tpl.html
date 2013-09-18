@@ -1,0 +1,32 @@
+<p class="text-center"> Total Instances : {{totalInstances}}</p>
+<div class="progress">
+    <div class="bar bar-success" ng-style="{width : runningInstances/totalInstances*100 + '%'}">Running Instances : {{runningInstances}}</div>
+    <div class="bar bar-danger" ng-style="{width: stoppedInstances/totalInstances*100 + '%'}">Stopped Instances : {{stoppedInstances}}</div>
+</div>
+<h4 class="text-center">System Capacity</h4>
+<table class="table table-bordered">
+    <tbody>
+        <tr ng-repeat="index in [0, 1, 2, 3]">
+            <td style="width: 50%">
+                <div style="position:relative;width:50%;float:left;text-align:right; display: inline;">
+                    Zone : {{capacities.list()[index].zonename}}<br>
+                    Type: {{capacities.list()[index].type}}<br>
+                    Usage: {{capacities.list()[index].used}}/{{capacities.list()[index].total}}
+                </div>
+                <div style="position:relative;width:50%;float:right;text-align:left; display: inline;">
+                    <canvas doughnut-usage-chart percent-used="capacities.list()[index].percent" style="float:right"></canvas>
+                </div>
+            </td>
+            <td style="width: 50%">
+                <div style="position:relative;width:50%;float:left;text-align:right; display: inline;">
+                    Zone : {{capacities.list()[index + 4].zonename}}<br>
+                    Type: {{capacities.list()[index + 4].type}}<br>
+                    Usage: {{capacities.list()[index + 4].used}}/{{capacities.list()[index + 4].total}}
+                </div>
+                <div style="position:relative;width:50%;float:right;text-align:left; display: inline;">
+                    <canvas doughnut-usage-chart percent-used="capacities.list()[index + 4].percent" style="float:right"></canvas>
+                </div>
+            </td>
+        </tr>
+   </tbody>
+</table>
