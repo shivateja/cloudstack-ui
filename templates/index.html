@@ -43,13 +43,13 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <a class="brand" ng-href="/#/">
-                    <span>CloudStack <img ng-show="loading" src="static/images/ajax-inverse.gif" width="17px" height="17px"></span>
+                    <span>CloudStack <img ng-show="isLoading()" src="static/images/ajax-inverse.gif" width="17px" height="17px"></span>
                 </a>
                 <login-toolbar></login-toolbar>
             </div>
         </div>
     </div>
-    <div class="container-fluid" ng-switch-when="true"> 
+    <div class="container-fluid" ng-switch-when="true">
         <div class="row-fluid">
             <div class="span2" ng-controller="NavCtrl">
                 <ul class="nav nav-tabs nav-stacked sidebar-nav-fixed">
@@ -142,13 +142,14 @@
     <script type="text/javascript" src="static/js/common/directives/label.js"></script>
     <script type="text/javascript" src="static/js/common/directives/edit-in-place.js"></script>
     <script type="text/javascript" src="static/js/common/directives/chart.js"></script>
+    <script type="text/javascript" src="static/js/common/directives/index.js"></script>
     <script type="text/javascript" src="static/js/common/directives/doughnut-usage-chart.js"></script>
     <script type="text/javascript" src="static/js/common/dictionary.js"></script>
     <script type="text/javascript" src="static/js/common/resources/zones.js"></script>
     <script type="text/javascript" src="static/js/common/resources/diskofferings.js"></script>
     <script type="text/javascript" src="static/js/common/resources/capacity.js"></script>
+    <script type="text/javascript" src="static/js/common/resources/users.js"></script>
     <script type="text/javascript" src="static/js/common/security/security.js"></script>
-    <script type="text/javascript" src="static/js/common/security/authorization.js"></script>
     <script type="text/javascript" src="static/js/common/security/interceptor.js"></script>
     <script type="text/javascript" src="static/js/common/security/retryQueue.js"></script>
     <script type="text/javascript" src="static/js/common/security/login/LoginFormController.js"></script>

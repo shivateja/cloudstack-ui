@@ -31,7 +31,10 @@ angular.module('services.requester').factory('requester', ['$http', '$timeout', 
         return newParams;
     };
 
+    // Service
     var requester = {};
+    // Number of pending async requests, used to show loading animations
+    var pendingAsyncRequests = 0;
 
     requester.get = function(command, params){
         //Parameters are optional while calling get
@@ -43,6 +46,8 @@ angular.module('services.requester').factory('requester', ['$http', '$timeout', 
     requester.async = function(command, params){
         //The promise that'll be returned
         var deferred = $q.defer();
+
+        pendingAsyncRequests++;
 
         params = makeParams(params, command);
 
@@ -59,10 +64,15 @@ angular.module('services.requester').factory('requester', ['$http', '$timeout', 
 
                 $timeout(function(){
                     $http.get(baseURL, {params : jobParams}).then(function(response){
-                        //If the job is done i.e the response has some jobstatus
-                        //Resolve the promise with the response
-                        if(response.data.queryasyncjobresultresponse.jobstatus){
+                        // Job execution is complete with status 1, means success, resolve it
+                        if(response.data.queryasyncjobresultresponse.jobstatus == 1){
+                            pendingAsyncRequests--;
                             deferred.resolve(response.data.queryasyncjobresultresponse.jobresult);
+                        }
+                        // Job execution is complete but status is 2, means error, reject it
+                        else if(response.data.queryasyncjobresultresponse.jobstatus == 2){
+                            pendingAsyncRequests--;
+                            deferred.reject(response.data.queryasyncjobresultresponse.jobresult);
                         }
                         //Keep polling till the job is done
                         else{
@@ -87,5 +97,12 @@ angular.module('services.requester').factory('requester', ['$http', '$timeout', 
             headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept' : 'application/json, text/javascript, */*; q=0.01'},
         });
     };
+
+    // Check if there any pending requests
+    // As async request is considered to be incomplete till there's a jobresult from mgmt server
+    requester.hasPendingRequests = function(){
+        return ($http.pendingRequests.length > 0 || pendingAsyncRequests > 0);
+    }
+
     return requester;
 }]);

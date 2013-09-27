@@ -1,0 +1,100 @@
+<!--
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+-->
+<div class="btn-group" style="margin-bottom:20px">
+    <confirm on-ok="disable(account)" action="Disable Account">
+        <button class="btn"><i class="icon-ban-circle"></i> Disable</button>
+    </confirm>
+    <confirm on-ok="lock(account)" action="Lock Account">
+        <button class="btn"><i class="icon-lock"></i> Lock</button>
+    </confirm>
+    <confirm on-ok="delete(account)" action="Delete Account">
+        <button class="btn"><i class="icon-trash"></i> Delete</button>
+    </confirm>
+</div>
+<a href="{{'/#/accounts/' + account.id + '/users'}}" class="pull-right"><button class="btn">Users <i class="icon-arrow-right"></i></button></a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Attribute Name</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Name</td>
+            <td>{{account.name}}</td>
+        </tr>
+        <tr>
+            <td>ID</td>
+            <td>{{account.id}}</td>
+        </tr>
+        <tr>
+            <td>Role</td>
+            <td>{{account.role}}</td>
+        </tr>
+        <tr>
+            <td>Domain</td>
+            <td>{{account.domain}}</td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td>{{account.state}}</td>
+        </tr>
+        <tr>
+            <td>Network Domain</td>
+            <td>{{account.networkdomain}}</td>
+        </tr>
+        <tr>
+            <td>Instance Limits</td>
+            <td>{{account.vmLimit}}</td>
+        </tr>
+        <tr>
+            <td>Public IP Limits</td>
+            <td>{{account.ipLimit}}</td>
+        </tr>
+        <tr>
+            <td>Volume Limits</td>
+            <td>{{account.volumeLimit}}</td>
+        </tr>
+        <tr>
+            <td>Snapshot Limit</td>
+            <td>{{account.snapshotLimit}}</td>
+        </tr>
+        <tr>
+            <td>Template Limit</td>
+            <td>{{account.templateLimit}}</td>
+        </tr>
+        <tr>
+            <td>Total of VM</td>
+            <td>{{account.vmtotal}}</td>
+        </tr>
+        <tr>
+            <td>Total of IP Addresses</td>
+            <td>{{account.iptotal}}</td>
+        </tr>
+        <tr>
+            <td>Bytes Recieved</td>
+            <td>{{account.recievedbytes}}</td>
+        </tr>
+        <tr>
+            <td>Bytes Sent</td>
+            <td>{{account.bytessent}}</td>
+        </tr>
+    </tbody>
+</table>

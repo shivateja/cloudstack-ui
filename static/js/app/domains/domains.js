@@ -22,15 +22,17 @@ config(['pluginsProvider', function(pluginsProvider){
         templateUrl: 'table.html',
         resolve: {
             domains: function(Domains){
-                return Domains.getFirstPage();
+                // Note that table.html does not support infinite scroll.
+                // Make a template to implement lazy loading here
+                return Domains.getAll();
             }
         }
     })
 }]);
 
-var DomainsListCtrl = angular.module('domains').controller('DomainsListCtrl', ['$scope', 'domains', 'Breadcrumbs', function($scope, domains, Breadcrumbs){
+angular.module('domains').controller('DomainsListCtrl', ['$scope', 'domains', 'Breadcrumbs', function($scope, domains, Breadcrumbs){
     Breadcrumbs.refresh();
-    Breadcrumbs.push('domains', '/#/domains');
+    Breadcrumbs.push('Domains', '/#/domains');
     $scope.collection = domains;
     $scope.toDisplay = ['id', 'name'];
 }]);

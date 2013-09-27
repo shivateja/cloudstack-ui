@@ -44,6 +44,7 @@ angular.module('directives.modalForm').directive('modalForm', ['$dialog', functi
                 var formDialog = $dialog.dialog(opts);
                 var dialogPromise;
                 scope.$apply(function(){
+                    // Dialog won't appear if this is not under $apply
                     dialogPromise = formDialog.open()
                 });
                 dialogPromise.then(function(result){
@@ -57,8 +58,10 @@ angular.module('directives.modalForm').directive('modalForm', ['$dialog', functi
 angular.module('directives.modalForm').controller('FormCtrl', ['$scope', 'dialog', 'formDetails', 'Dictionary',
         function TestDialogController($scope, dialog, formDetails, Dictionary){
     $scope.dictionary = Dictionary;
-    //formObject will be passed into onSubmit when submit is clicked
+    // formObject will be passed into onSubmit when submit is clicked
+    // This is much cleaner than serializing data
     $scope.formObject = {};
+
     $scope.template = 'table.html';
     $scope.formDetails = formDetails;
     $scope.title = formDetails.title;
@@ -68,4 +71,5 @@ angular.module('directives.modalForm').controller('FormCtrl', ['$scope', 'dialog
     $scope.submit = function(){
         dialog.close($scope.formObject);
     };
+
 }]);

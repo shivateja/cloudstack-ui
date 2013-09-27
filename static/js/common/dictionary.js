@@ -18,6 +18,7 @@
 angular.module('cloudstack').factory("Dictionary", function(){
     var dictionary = {
         labels: {
+            // TODO: Sort these
             id : 'ID',
             username : 'Username',
             account : 'Account',
@@ -62,6 +63,7 @@ angular.module('cloudstack').factory("Dictionary", function(){
             email: 'Email',
             firstname: 'First Name',
             lastname: 'Last Name',
+            role: 'Role'
         }
     };
     return dictionary;

@@ -16,12 +16,15 @@
 // under the License.
 
 angular.module('resources.templates', ['services.helperfunctions', 'services.requester']);
-angular.module('resources.templates').factory('Templates', ['Template', 'makeArray', 'requester', 'setState', function(Template, makeArray, requester, setState){
+angular.module('resources.templates').factory('Templates', ['Template', 'makeArray', 'requester', function(Template, makeArray, requester){
     var pagesize = 20;
 
-    var Templates = function(templates, state){
-        this.state = setState(state);
+    var Templates = function(templates, options){
+        this.options = options || {};
         this.collection = templates;
+
+        // Set default pagesize
+        if(!options.pagesize) options.pagesize = pagesize;
     };
 
     //Class methods
@@ -31,23 +34,19 @@ angular.module('resources.templates').factory('Templates', ['Template', 'makeArr
 
     Templates.prototype.loadNextPage = function(){
         var self = this;
-        var params = {
-            page: this.state.page + 1,
-            pagesize: pagesize,
-            templatefilter: this.state.templatefilter
-        };
 
-        if(this.state.keyword){
-            //keyword is defined
-            //Add it to params
-            params.keyword = this.state.keyword;
-        };
+        if(!(!!this.options.page)) return;
+
+        // Make a copy of options
+        var params = angular.copy(this.options);
+        params.page++;
+
         return requester.get('listTemplates', params)
             .then(function(response){
                 return response.data.listtemplatesresponse.template;
             }).then(makeArray(Template)).then(function(templates){
                 if(templates.length){
-                    self.state.page++;
+                    self.options.page++;
                     self.collection = self.collection.concat(templates);
                 };
             });
@@ -55,25 +54,78 @@ angular.module('resources.templates').factory('Templates', ['Template', 'makeArr
 
     //Static methods
     Templates.getFirstPage = function(){
-        return requester.get('listTemplates', {
-            page: 1,
-            pagesize: pagesize,
-            templatefilter: 'all'
-        }).then(function(response){
-            return response.data.listtemplatesresponse.template;
-        }).then(makeArray(Template)).then(function(collection){
-            return new Templates(collection, {page: 1, templatefilter: 'all'});
-        });
+        return Templates.customFilter().templatefilter('all').page(1).pagesize(pagesize).get();
     }
 
     Templates.getAll = function(){
-        return requester.get('listTemplates', {templatefilter: 'all'}).then(function(response){
-            return response.data.listtemplatesresponse.template;
-        }).then(makeArray(Template)).then(function(collection){
-            return new Templates(collection);
-        });
+        return Templates.customFilter().templatefilter('all').get();
     };
 
+    Templates.customFilter = function(){
+        var filters = {};
+        var options = {};
+
+        filters.templatefilter = function(templatefilter){
+            options.templatefilter = templatefilter;
+            return filters;
+        }
+        filters.account = function(account){
+            options.account = account;
+            return filters;
+        }
+        filters.domainid = function(domainid){
+            options.domainid = domainid;
+            return filters;
+        }
+        filters.hypervisor = function(hypervisor){
+            options.hypervisor = hypervisor;
+            return filters;
+        }
+        filters.id = function(id){
+            options.id = id;
+            return filters;
+        }
+        filters.isrecursive = function(isrecursive){
+            options.isrecursive = isrecursive;
+            return filters;
+        }
+        filters.keyword = function(keyword){
+            options.keyword = keyword;
+            return filters;
+        }
+        filters.listall = function(listall){
+            options.listall = listall;
+            return filters;
+        }
+        filters.name = function(name){
+            options.name = name;
+            return filters;
+        }
+        filters.page = function(page){
+            options.page = page;
+            return filters;
+        }
+        filters.pagesize = function(pagesize){
+            options.pagesize = pagesize;
+            return filters;
+        }
+        filters.projectid = function(projectid){
+            options.projectid = projectid;
+            return filters;
+        }
+        filters.zoneid = function(zoneid){
+            options.zoneid = zoneid;
+            return filters;
+        }
+        filters.get = function(){
+            return requester.get('listTemplates', options).then(function(response){
+                return response.data.listtemplatesresponse.template;
+            }).then(makeArray(Template)).then(function(collection){
+                return new Templates(collection, options);
+            });
+        }
+        return filters;
+    }
     return Templates;
 }]);
 

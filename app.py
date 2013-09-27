@@ -17,7 +17,7 @@ from flask import Flask, url_for, render_template, request, json, abort, send_fr
 import requests
 app = Flask(__name__)
 
-csurl = 'http://10.8.0.170:8080/'
+csurl = 'http://localhost:8080/'
 
 def get_args(multidict):
     """Default type of request.args or request.json is multidict. Converts it to dict so that can be passed to make_request"""
@@ -28,19 +28,19 @@ def get_args(multidict):
 
 @app.route('/<path:path>', methods=['GET', 'POST'])
 def api(path):
-    """This method is cathes any URL that is not registered
+    """This method catches any URL that is not registered
     by any other methods. It sends the request to the ACS server with
     the same headers, cookies and arguments and sends the same response
-    from ACS server to the browser. Basically, this is just mirroring the
+    from ACS server to the browser. Just mirroring the
     ACS server."""
     headers = dict(request.headers)
     if request.method == 'GET':
         args = get_args(request.args)
         #Not sure where these headers are coming from in GET requests
         #Probably flask is added them by default to all the requests
-        #If these headers are not deleted, 
+        #If these headers are not deleted,
         #management server produces 400 Bad Request error
-        #3 days of extensive debugging, sigh
+        #3 days of extensive debugging, sigh!
         del headers['Content-Length']
         del headers['Content-Type']
         #Send the GET request to CS server with the

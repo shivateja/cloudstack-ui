@@ -1,0 +1,98 @@
+<!--
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+-->
+<div class="btn-group" style="margin-bottom:20px;">
+    <confirm on-ok="takeSnapshot()" action="Take Snapshot">
+        <button class="btn"><i class="icon-camera"></i> Take Snapshot</button>
+    </confirm>
+</div>
+<a href="{{'/#/storage/volumes/' + volume.id + '/snapshots'}}" class="pull-right"><button class="btn">Snapshots <i class="icon-arrow-right"></i></button></a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Attribute Name</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Name</td>
+            <td>{{volume.name}}</td>
+        </tr>
+        <tr>
+            <td>ID</td>
+            <td>{{volume.id}}</td>
+        </tr>
+        <tr>
+            <td>Zone Name</td>
+            <td>{{volume.zonename}}</td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td>{{volume.state}}</td>
+        </tr>
+        <tr>
+            <td>Type</td>
+            <td>{{volume.type}}</td>
+        </tr>
+        <tr>
+            <td>Storage Type</td>
+            <td>{{volume.storagetype}}</td>
+        </tr>
+        <tr>
+            <td>Hypervisor</td>
+            <td>{{volume.hypervisor}}</td>
+        </tr>
+        <tr>
+            <td>Size</td>
+            <td>{{volume.size}}</td>
+        </tr>
+        <tr>
+            <td>VM ID</td>
+            <td>{{volume.virtualmachineid}}</td>
+        </tr>
+        <tr>
+            <td>VM Display Name</td>
+            <td>{{volume.vmdisplayname}}</td>
+        </tr>
+        <tr>
+            <td>VM State</td>
+            <td>{{volume.vmstate}}</td>
+        </tr>
+        <tr>
+            <td>Device ID</td>
+            <td>{{volume.deviceid}}</td>
+        </tr>
+        <tr>
+            <td>Storage</td>
+            <td>{{volume.storage}}</td>
+        </tr>
+        <tr>
+            <td>Created</td>
+            <td>{{volume.created}}</td>
+        </tr>
+        <tr>
+            <td>Domain</td>
+            <td>{{volume.domain}}</td>
+        </tr>
+        <tr>
+            <td>Account</td>
+            <td>{{volume.account}}</td>
+        </tr>
+    </tbody>
+</table>

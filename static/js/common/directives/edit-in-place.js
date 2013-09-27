@@ -16,7 +16,7 @@
 // under the License.
 
 angular.module('directives.editInPlace', []);
-angular.module('directives.editInPlace').directive('editInPlace', function(){
+angular.module('directives.editInPlace').directive('editInPlace', ['$timeout', function($timeout){
     return {
         restrict: 'E',
         replace: true,
@@ -36,7 +36,15 @@ angular.module('directives.editInPlace').directive('editInPlace', function(){
                 }
 
                 scope.save = function(){
-                    scope.$eval(attrs.onSave);
+                    // If on save is given, try evaluating that
+                    // TODO: Using $eval doesn't seem to be working sometimes, recheck approach
+                    if(attrs.onSave){
+                        scope.$eval(attrs.onSave);
+                    }
+                    // If not default to calling model.update()
+                    else{
+                        scope.model.update();
+                    }
                     scope.editing = false;
                 }
 
@@ -46,4 +54,4 @@ angular.module('directives.editInPlace').directive('editInPlace', function(){
                 }
         }
     }
-});
+}]);

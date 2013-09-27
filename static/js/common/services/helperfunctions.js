@@ -38,18 +38,19 @@ angular.module('services.helperfunctions').factory('makeInstance', function(){
     return makeInstance;
 });
 
-angular.module('services.helperfunctions').factory('setState', function(){
-    var setState = function(state){
-        //Just a simple function to get the state out of params given to most collections
-        state = state || {};
-
-        //Check if page is defined in parameters, if it is defined
-        //Set the state of the object
-        //These are just to make sure important states are not 'undefined'
-        if(typeof state.page === 'undefined') state.page = null;
-        if(typeof state.keyword === 'undefined') state.keyword = null;
-
-        return state;
+angular.module('services.helperfunctions').factory('makeFilters', function(){
+    // TODO: This is not working. Debug it later
+    var makeFilters = function(opts){
+        var filters = {};
+        filters.options = {};
+        for(var i = 0; i < opts.length; i++){
+            var opt = opts[i];
+            filters[opt] = function(option){
+                filters.options[opt] = option;
+                return filters;
+            }
+        }
+        return filters;
     }
-    return setState;
+    return makeFilters;
 });

@@ -16,12 +16,16 @@
 // under the License.
 
 angular.module('resources.serviceofferings', ['services.helperfunctions', 'services.requester']);
-angular.module('resources.serviceofferings').factory('ServiceOfferings', ['$http', 'ServiceOffering', 'makeArray', 'requester', 'setState', function($http, ServiceOffering, makeArray, requester, setState){
+angular.module('resources.serviceofferings').factory('ServiceOfferings', ['ServiceOffering', 'makeArray', 'requester',
+        function(ServiceOffering, makeArray, requester){
     var pagesize = 20;
 
-    var ServiceOfferings = function(serviceofferings, state){
-        this.state = setState(state);
+    var ServiceOfferings = function(serviceofferings, options){
+        this.options = options || {};
         this.collection = serviceofferings;
+
+        // Set default pagesize
+        if(!options.pagesize) options.pagesize = pagesize;
     };
 
     //Class methods
@@ -31,22 +35,19 @@ angular.module('resources.serviceofferings').factory('ServiceOfferings', ['$http
 
     ServiceOfferings.prototype.loadNextPage = function(){
         var self = this;
-        var params = {
-            page: this.state.page + 1,
-            pagesize: pagesize
-        };
 
-        if(this.state.keyword){
-            //keyword is defined
-            //Add it to params
-            params.keyword = this.state.keyword;
-        };
+        if(!(!!this.options.page)) return;
+
+        // Make a copy of options
+        var params = angular.copy(this.options);
+        params.page++;
+
         return requester.get('listServiceOfferings', params)
             .then(function(response){
                 return response.data.listserviceofferingsresponse.serviceoffering;
             }).then(makeArray(ServiceOffering)).then(function(serviceofferings){
                 if(serviceofferings.length){
-                    self.state.page++;
+                    self.options.page++;
                     self.collection = self.collection.concat(serviceofferings);
                 };
             });
@@ -54,24 +55,62 @@ angular.module('resources.serviceofferings').factory('ServiceOfferings', ['$http
 
     //Static methods
     ServiceOfferings.getFirstPage = function(){
-        return requester.get('listServiceOfferings', {
-            page: 1,
-            pagesize: pagesize
-        }).then(function(response){
-            return response.data.listserviceofferingsresponse.serviceoffering;
-        }).then(makeArray(ServiceOffering)).then(function(collection){
-            return new ServiceOfferings(collection, {page: 1});
-        });
+        return ServiceOfferings.customFilters().page(1).pagesize(pagesize).get();
     }
 
     ServiceOfferings.getAll = function(){
-        return requester.get('listServiceOfferings').then(function(response){
-            return response.data.listserviceofferingsresponse.serviceoffering;
-        }).then(makeArray(ServiceOffering)).then(function(collection){
-            return new ServiceOfferings(collection);
-        });
+        return ServiceOfferings.customFilters().get();
     };
 
+    ServiceOfferings.customFilters = function(){
+        var filters = {};
+        var options = {};
+
+        filters.domainid = function(domainid){
+            options.domainid = domainid;
+            return filters;
+        }
+        filters.id = function(domainid){
+            options.id = id;
+            return filters;
+        }
+        filters.issystem = function(issystem){
+            options.issystem = issystem;
+            return filters;
+        }
+        filters.keyword = function(keyword){
+            options.keyword = keyword;
+            return filters;
+        }
+        filters.name = function(name){
+            options.name = name;
+            return filters;
+        }
+        filters.page = function(page){
+            options.page = page;
+            return filters;
+        }
+        filters.pagesize = function(pagesize){
+            options.pagesize = pagesize;
+            return filters;
+        }
+        filters.systemvmtype = function(systemvmtype){
+            options.systemvmtype = systemvmtype;
+            return filters;
+        }
+        filters.virtualmachineid = function(virtualmachineid){
+            options.virtualmachineid = virtualmachineid;
+            return filters;
+        }
+        filters.get = function(){
+            return requester.get('listServiceOfferings', options).then(function(response){
+                return response.data.listserviceofferingsresponse.serviceoffering;
+            }).then(makeArray(ServiceOffering)).then(function(collection){
+                return new ServiceOfferings(collection, options);
+            })
+        }
+        return filters;
+    }
     return ServiceOfferings;
 }]);
 

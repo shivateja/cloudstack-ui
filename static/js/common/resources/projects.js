@@ -16,12 +16,15 @@
 // under the License.
 
 angular.module('resources.projects', ['services.helperfunctions', 'services.requester']);
-angular.module('resources.projects').factory('Projects', ['Project', 'makeArray', 'requester', 'setState', function(Project, makeArray, requester, setState){
+angular.module('resources.projects').factory('Projects', ['Project', 'makeArray', 'requester', function(Project, makeArray, requester){
     var pagesize = 20;
 
-    var Projects = function(projects, state){
-        this.state = setState(state);
+    var Projects = function(projects, options){
+        this.options = options || {};
         this.collection = projects;
+
+        // Set default pagesize
+        if(!options.pagesize) options.pagesize = pagesize;
     };
 
     //Class methods
@@ -46,7 +49,7 @@ angular.module('resources.projects').factory('Projects', ['Project', 'makeArray'
                 return response.data.listprojectsresponse.project;
             }).then(makeArray(Project)).then(function(projects){
                 if(projects.length){
-                    self.state.page++;
+                    self.options.page++;
                     self.collection = self.collection.concat(projects);
                 };
             });
@@ -54,24 +57,70 @@ angular.module('resources.projects').factory('Projects', ['Project', 'makeArray'
 
     //Static methods
     Projects.getFirstPage = function(){
-        return requester.get('listProjects', {
-            page: 1,
-            pagesize: pagesize
-        }).then(function(response){
-            return response.data.listprojectsresponse.project;
-        }).then(makeArray(Project)).then(function(collection){
-            return new Projects(collection, {page: 1});
-        });
+        return Projects.customFilter().page(1).pagesize(pagesize).get();
     }
 
     Projects.getAll = function(){
-        return requester.get('listProjects').then(function(response){
-            return response.data.listprojectsresponse.project;
-        }).then(makeArray(Project)).then(function(collection){
-            return new Projects(collection);
-        });
+        return Projects.customFilter().get();
     };
 
+    Projects.customFilter = function(){
+        var filters = {};
+        var options = {};
+
+        filters.account = function(account){
+            options.account = account;
+            return filters;
+        }
+        filters.displaytext = function(displaytext){
+            options.displaytext = displaytext;
+            return filters;
+        }
+        filters.domainid = function(domainid){
+            options.domainid = domainid;
+            return filters;
+        }
+        filters.id = function(id){
+            options.id = id;
+            return filters;
+        }
+        filters.isrecursive = function(isrecursive){
+            options.isrecursive = isrecursive;
+            return filters;
+        }
+        filters.keyword = function(keyword){
+            options.keyword = keyword;
+            return filters;
+        }
+        filters.listall = function(listall){
+            options.listall = listall;
+            return filters;
+        }
+        filters.name = function(name){
+            options.name = name;
+            return filters;
+        }
+        filters.page = function(page){
+            options.page = page;
+            return filters;
+        }
+        filters.pagesize = function(pagesize){
+            options.pagesize = pagesize;
+            return filters;
+        }
+        filters.state = function(state){
+            options.state = state;
+            return filters;
+        }
+        filters.get = function(){
+            return requester.get('listProjects', options).then(function(response){
+                return response.data.listprojectsresponse.project;
+            }).then(makeArray(Project)).then(function(collection){
+                return new Projects(collection, options);
+            })
+        }
+        return filters;
+    }
     return Projects;
 }]);
 

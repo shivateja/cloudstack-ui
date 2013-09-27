@@ -34,4 +34,11 @@ angular.module('globalsettings').controller('ConfigurationsListCtrl', ['$scope',
     Breadcrumbs.push('Configurations', '/#/configurations');
     $scope.collection = configurations;
     $scope.toDisplay = ['name', 'description', 'value'];
+
+    $scope.update = function(configuration){
+        // Update and notify
+        configuration.update().then(function(response){
+            Notifications.push('success', 'Updated ' + response.name + '. Please restart management server(s) for new settings to take effect');
+        });
+    }
 }]);

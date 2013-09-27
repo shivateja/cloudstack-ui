@@ -17,23 +17,27 @@
 // under the License.
 -->
 <div class="well well-small form-inline">
-    <input type="text" placeholder="Search" class="input-medium search-query" ng-model="search.name">
-    <modal-form form-details="addAccountForm">
-        <button class="btn"><i class="icon-plus"></i> Add Account</button>
-    </modal-form>
+    <input type="text" placeholder="Search" class="input-medium search-query" ng-model="search.displayname">
 </div>
 <table class="table table-bordered" infinite-scroll="collection.loadNextPage()">
     <thead>
         <tr>
-            <th ng-repeat="attribute in toDisplay"> {{dictionary.labels[attribute]}} </th>
+            <th>Name</th>
+            <th>Account</th>
+            <th>Type</th>
+            <th>VLAN</th>
+            <th>CIDR</th>
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="account in collection.list() | filter: search">
-            <td><a href="{{'/#/accounts/' + account.id}}">{{account.name}}</a></td>
-            <td>{{account.role}}</td>
-            <td>{{account.domain}}</td>
-            <td>{{account.state}}</td>
+        <tr ng-repeat="network in collection.list() | filter: search">
+            <td>
+                <a href="{{'/#/networks/' + network.id}}">{{network.name}}</a>
+            </td>
+            <td>{{network.account}}</td>
+            <td>{{network.type}}</td>
+            <td>{{network.vlan}}</td>
+            <td>{{network.cidr}}</td>
         </tr>
     </tbody>
 </table>

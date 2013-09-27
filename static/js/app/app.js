@@ -16,8 +16,6 @@
 // under the License.
 
 angular.module('cloudstack', [
-        'ui.bootstrap',
-        'infinite-scroll',
         'dashboard',
         'instances',
         'storage',
@@ -32,65 +30,53 @@ angular.module('cloudstack', [
         'services.breadcrumbs',
         'services.notifications',
         'services.pluginsProvider',
-        'directives.confirm',
-        'directives.modalForm',
-        'directives.label',
-        'directives.editInPlace',
-        'directives.chart',
-        'directives.doughnutUsageChart',
+        'directives',
         'security',
         'md5',
+        'ui.bootstrap',
+        'infinite-scroll',
         'ngCookies'
         ]).
-config(["$routeProvider", function($routeProvider){
+config(['$routeProvider', function($routeProvider){
     $routeProvider.
     when('/',{
-        controller: "DefaultCtrl",
-        templateUrl: "default.html"
+        controller: 'DefaultCtrl',
+        templateUrl: 'default.html'
     }).
     otherwise({
         redirectTo: '/'
     })
 }]);
 
-angular.module("cloudstack").controller("DefaultCtrl", ["$scope", "Breadcrumbs", "security", "$location", function($scope, Breadcrumbs, security, $location){
+angular.module('cloudstack').controller('DefaultCtrl', ['$scope', 'Breadcrumbs', 'security', '$location', function($scope, Breadcrumbs, security, $location){
     Breadcrumbs.refresh();
-    
+    // If the user is authenticated, show the dashboard. If not, this will automatically show the login screen
     if(security.isAuthenticated()) $location.path('/dashboard');
 }]);
 
 
-angular.module("cloudstack").controller("AppCtrl", ["$scope", "Breadcrumbs", "Notifications", "Dictionary", "$rootScope", "security", "plugins",
-        function($scope, Breadcrumbs, Notifications, Dictionary, $rootScope, security, plugins){
-    $scope.plugins = plugins
+angular.module('cloudstack').controller('AppCtrl', ['$scope', 'Breadcrumbs', 'Notifications', 'Dictionary', '$rootScope', 'security', 'plugins', 'requester',
+        function($scope, Breadcrumbs, Notifications, Dictionary, $rootScope, security, plugins, requester){
+    // Plugins, used to build the side nav bar
+    $scope.plugins = plugins;
     $scope.breadcrumbs = Breadcrumbs;
     $scope.dictionary = Dictionary;
     $scope.notifications = Notifications;
 
     $scope.security = security;
 
-    $scope.loading = false;
-
-    $rootScope.$on("$routeChangeStart", function(event, next, current){
-        $scope.loading = true;
-    });
-
-    $rootScope.$on("$routeChangeError", function(event){
-        $scope.loading = false;
-    });
-
-    $rootScope.$on("$routeChangeSuccess", function(event, current, previous){
-        $scope.loading = false;
-    });
+    // Call this function to see if something is loading
+    $scope.isLoading = requester.hasPendingRequests;
 }]);
 
-angular.module("cloudstack").controller("HeaderCtrl", ["$scope", function($scope){
+angular.module('cloudstack').controller('HeaderCtrl', ['$scope', function($scope){
+    // Do we need this?
 }]);
 
-angular.module("cloudstack").controller("NavCtrl", ["$scope", "$location", function($scope, $location){
+angular.module('cloudstack').controller('NavCtrl', ['$scope', '$location', function($scope, $location){
     $scope.isActive = function(page){
-        if($location.path() === '/' && page === '/') return 'active'; //home page
-        console.log(page.split('/'));
+        // Calling isActive('dashboard') will split the path and see if the first thing
+        // in the path is 'dashboard', returns 'active' if it is
         return $location.path().split('/')[1] === page.split('/')[1]? 'active': '';
     }
 }]);
@@ -98,8 +84,7 @@ angular.module("cloudstack").controller("NavCtrl", ["$scope", "$location", funct
 
 angular.module('cloudstack').run(['security', '$location', function(security, $location) {
     // Check for previous login
-    // If not logged, redirect to logged in page
-    if(!security.wasLoggedIn()){
-        $location.path('/login');
-    }
+    // If the user is not logged in, security.isAuthenticated should return false
+    // and login screen shows up
+    security.wasLoggedIn()
 }]);

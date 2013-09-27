@@ -16,12 +16,15 @@
 // under the License.
 
 angular.module('resources.domains', ['services.helperfunctions', 'services.requester']);
-angular.module('resources.domains').factory('Domains', ['$http', 'Domain', 'makeArray', 'requester', 'setState', function($http, Domain, makeArray, requester, setState){
+angular.module('resources.domains').factory('Domains', ['$http', 'Domain', 'makeArray', 'requester', function($http, Domain, makeArray, requester){
     var pagesize = 20;
 
-    var Domains = function(domains, state){
-        this.state = setState(state);
+    var Domains = function(domains, options){
+        this.options = options || {};
         this.collection = domains;
+
+        // Set default pagesize
+        if(!options.pagesize) options.pagesize = pagesize;
     };
 
     //Class methods
@@ -31,22 +34,19 @@ angular.module('resources.domains').factory('Domains', ['$http', 'Domain', 'make
 
     Domains.prototype.loadNextPage = function(){
         var self = this;
-        var params = {
-            page: this.state.page + 1,
-            pagesize: pagesize
-        };
 
-        if(this.state.keyword){
-            //keyword is defined
-            //Add it to params
-            params.keyword = this.state.keyword;
-        };
+        if(!(!!this.options.page)) return;
+
+        // Make a copy of options
+        var params = angular.copy(this.options);
+        params.page++;
+
         return requester.get('listDomains', params)
             .then(function(response){
                 return response.data.listdomainsresponse.domain;
             }).then(makeArray(Domain)).then(function(domains){
                 if(domains.length){
-                    self.state.page++;
+                    self.options.page++;
                     self.collection = self.collection.concat(domains);
                 };
             });
@@ -54,23 +54,54 @@ angular.module('resources.domains').factory('Domains', ['$http', 'Domain', 'make
 
     //Static methods
     Domains.getFirstPage = function(){
-        return requester.get('listDomains', {
-            page: 1,
-            pagesize: pagesize
-        }).then(function(response){
-            return response.data.listdomainsresponse.domain;
-        }).then(makeArray(Domain)).then(function(collection){
-            return new Domains(collection, {page: 1});
-        });
+        return Domains.customFilters().page(1).pagesize(pagesize).get();
     }
 
     Domains.getAll = function(){
-        return requester.get('listDomains').then(function(response){
-            return response.data.listdomainsresponse.domain;
-        }).then(makeArray(Domain)).then(function(collection){
-            return new Domains(collection);
-        });
+        return Domains.customFilters().get();
     };
+
+    Domains.customFilters = function(){
+        var filters = {};
+        var options = {};
+
+        filters.id = function(id){
+            options.id = id;
+            return filters;
+        }
+        filters.keyword = function(keyword){
+            options.keyword = keyword;
+            return filters;
+        }
+        filters.level = function(level){
+            options.level = level;
+            return filters;
+        }
+        filters.listall = function(listall){
+            options.listall = listall;
+            return filters;
+        }
+        filters.name = function(name){
+            options.name = name;
+            return filters;
+        }
+        filters.page = function(page){
+            options.page = page;
+            return filters;
+        }
+        filters.pagesize = function(pagesize){
+            options.pagesize = pagesize;
+            return filters;
+        }
+        filters.get = function(){
+            return requester.get('listDomains', options).then(function(response){
+                return response.data.listdomainsresponse.domain;
+            }).then(makeArray(Domain)).then(function(collection){
+                return new Domains(collection, options);
+            })
+        }
+        return filters;
+    }
 
     return Domains;
 }]);

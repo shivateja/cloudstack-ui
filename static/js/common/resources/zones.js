@@ -16,12 +16,14 @@
 // under the License.
 
 angular.module('resources.zones', ['services.helperfunctions', 'services.requester']);
-angular.module('resources.zones').factory('Zones', ['Zone', 'makeArray', 'requester', 'setState', function(Zone, makeArray, requester, setState){
+angular.module('resources.zones').factory('Zones', ['Zone', 'makeArray', 'requester', function(Zone, makeArray, requester){
     var pagesize = 20;
 
-    var Zones = function(zones, state){
-        this.state = setState(state);
+    var Zones = function(zones, options){
+        this.options = options || {};
         this.collection = zones;
+
+        if(!(this.options.pagesize)) this.options.pagesize = pagesize;
     };
 
     //Class methods
@@ -31,22 +33,19 @@ angular.module('resources.zones').factory('Zones', ['Zone', 'makeArray', 'reques
 
     Zones.prototype.loadNextPage = function(){
         var self = this;
-        var params = {
-            page: this.state.page + 1,
-            pagesize: pagesize
-        };
 
-        if(this.state.keyword){
-            //keyword is defined
-            //Add it to params
-            params.keyword = this.state.keyword;
-        };
+        if(!(!!this.options.page)) return;
+
+        // Make a copy of options
+        var params = angular.copy(this.options);
+        params.page++;
+
         return requester.get('listZones', params)
             .then(function(response){
                 return response.data.listzonesresponse.zone;
             }).then(makeArray(Zone)).then(function(zones){
                 if(zones.length){
-                    self.state.page++;
+                    self.options.page++;
                     self.collection = self.collection.concat(zones);
                 };
             });
@@ -54,25 +53,62 @@ angular.module('resources.zones').factory('Zones', ['Zone', 'makeArray', 'reques
 
     //Static methods
     Zones.getFirstPage = function(){
-        return requester.get('listZones', {
-            page: 1,
-            pagesize: pagesize
-        }).then(function(response){
-            return response.data.listzonesresponse.zone;
-        }).then(makeArray(Zone)).then(function(collection){
-            return new Zones(collection, {page: 1});
-        });
+        return Zones.customFilters().page(1).pagesize(pagesize).get();
     }
 
-
     Zones.getAll = function(){
-        return requester.get('listZones').then(function(response){
-            return response.data.listzonesresponse.zone;
-        }).then(makeArray(Zone)).then(function(collection){
-            return new Zones(collection);
-        });
+        return Zones.customFilters().get();
     };
 
+    Zones.customFilters = function(){
+        var filters = {};
+        var options = {};
+
+        filters.available = function(available){
+            options.available = available;
+            return filters;
+        }
+        filters.domainid = function(domainid){
+            options.domainid = domainid;
+            return filters;
+        }
+        filters.id = function(id){
+            options.id = id;
+            return filters;
+        }
+        filters.keyword = function(keyword){
+            options.keyword = keyword;
+            return filters;
+        }
+        filters.name = function(name){
+            options.name = name;
+            return filters;
+        }
+        filters.networktype = function(networktype){
+            options.networktype = networktype;
+            return filters;
+        }
+        filters.page = function(page){
+            options.page = page;
+            return filters;
+        }
+        filters.pagesize = function(pagesize){
+            options.pagesize = pagesize;
+            return filters;
+        }
+        filters.showcapacities = function(showcapacities){
+            options.showcapacities = showcapacities;
+            return filters;
+        }
+        filters.get = function(){
+            return requester.get('listZones', options).then(function(response){
+                return response.data.listzonesresponse.zone;
+            }).then(makeArray(Zone)).then(function(collection){
+                return new Zones(collection, options);
+            })
+        }
+        return filters;
+    }
     return Zones;
 }]);
 

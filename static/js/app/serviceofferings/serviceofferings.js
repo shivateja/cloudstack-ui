@@ -22,7 +22,7 @@ config(['pluginsProvider', function(pluginsProvider){
         templateUrl: 'table.html',
         resolve: {
             serviceofferings: function(ServiceOfferings){
-                return ServiceOfferings.getFirstPage();
+                return ServiceOfferings.getAll();
             }
         }
     })
@@ -30,7 +30,7 @@ config(['pluginsProvider', function(pluginsProvider){
 
 angular.module('serviceofferings').controller('ServiceOfferingsListCtrl', ['$scope', 'serviceofferings', 'Breadcrumbs', function($scope, serviceofferings, Breadcrumbs){
     Breadcrumbs.refresh();
-    Breadcrumbs.push('serviceofferings', '/#/serviceofferings');
+    Breadcrumbs.push('Service Offerings', '/#/serviceofferings');
     $scope.collection = serviceofferings
     $scope.toDisplay = ['name', 'displaytext'];
 }]);

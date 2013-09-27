@@ -53,21 +53,16 @@ angular.module('resources.networks').factory('Networks', ['Network', 'makeArray'
 
     //Static methods
     Networks.getFirstPage = function(){
-        return requester.get('listNetworks', {
-            page: 1,
-            pagesize: pagesize
-        }).then(function(response){
-            return response.data.listnetworksresponse.network;
-        }).then(makeArray(Network)).then(function(collection){
-            return new Networks(collection, {page: 1});
-        });
+        return Networks.customFilter().page(1).pagesize(pagesize).get();
     }
 
     Networks.getAll = function(){
-        return requester.get('listNetworks').then(function(response){
-            return response.data.listnetworksresponse.network;
-        }).then(makeArray(Network)).then(function(collection){
-            return new Networks(collection);
+        return Networks.customFilter().get();
+    };
+
+    Networks.getById = function(id){
+        return Networks.customFilter().id(id).get().then(function(networks){
+            return networks.list()[0];
         });
     };
 
@@ -93,6 +88,11 @@ angular.module('resources.networks').factory('Networks', ['Network', 'makeArray'
 
         filters.domainid = function(domainid){
             options.domainid = domainid;
+            return filters;
+        }
+
+        filters.id = function(id){
+            options.id = id;
             return filters;
         }
 
@@ -181,9 +181,17 @@ angular.module('resources.networks').factory('Networks', ['Network', 'makeArray'
     return Networks;
 }]);
 
-angular.module('resources.networks').factory('Network', function(){
+angular.module('resources.networks').factory('Network', ['requester', function(requester){
     var Network = function(attrs){
         angular.extend(this, attrs);
     };
+
+    Network.prototype.restart = function(){
+        return requester.async('restartNetwork', {id: this.id});
+    }
+
+    Network.prototype.delete = function(){
+        return requester.async('deleteNetwork', {id: this.id});
+    }
     return Network;
-});
+}]);

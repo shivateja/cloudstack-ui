@@ -15,4 +15,11 @@
 // specific language governing permissions and limitations
 // under the License.
 
-angular.module('security.login', ['security.login.form', 'security.login.toolbar']);
+angular.module('directives', [
+    'directives.confirm',
+    'directives.modalForm',
+    'directives.label',
+    'directives.editInPlace',
+    'directives.chart',
+    'directives.doughnutUsageChart'
+]);

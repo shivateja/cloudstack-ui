@@ -28,7 +28,7 @@
         </select>
     </label>
 </div>
-<table class="table table-bordered">
+<table class="table table-bordered" infinite-scroll="collection.loadNextPage()">
     <thead>
         <tr>
             <th ng-repeat="attribute in toDisplay"> {{dictionary.labels[attribute]}} </th>
@@ -36,18 +36,18 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="model in collection.list() | filter:search">
+        <tr ng-repeat="virtualmachine in collection.list() | filter:search">
             <td>
-                <a href="{{'/#/instances/' + model.id}}">{{model.displayname}}</a>
+                <a href="{{'/#/instances/' + virtualmachine.id}}">{{virtualmachine.displayname}}</a>
             </td>
-            <td>{{model.instancename}}</td>
-            <td>{{model.zonename}}</td>
-            <td><vm-state-label vm="model"></vm-state-label></td>
+            <td>{{virtualmachine.instancename}}</td>
+            <td>{{virtualmachine.zonename}}</td>
+            <td><vm-state-label vm="virtualmachine"></vm-state-label></td>
             <td>
-                <confirm on-ok="model.start()" action="Start VirtualMachine"><i class="icon-play"></i></confirm>
-                <confirm on-ok="model.stop()" action="Stop VirtualMachine"><i class="icon-ban-circle"></i></confirm>
-                <confirm on-ok="model.reboot()" action="Reboot VirtualMachine"><i class="icon-repeat"></i></confirm>
-                <confirm on-ok="model.destroy()" action="Destroy VirtualMachine"><i class="icon-remove"></i></confirm>
+                <confirm on-ok="start(virtualmachine)" action="Start VirtualMachine"><i class="icon-play"></i></confirm>
+                <confirm on-ok="stop(virtualmachine)" action="Stop VirtualMachine"><i class="icon-ban-circle"></i></confirm>
+                <confirm on-ok="reboot(virtualmachine)" action="Reboot VirtualMachine"><i class="icon-repeat"></i></confirm>
+                <confirm on-ok="destroy(virtualmachine)" action="Destroy VirtualMachine"><i class="icon-remove"></i></confirm>
             </td>
         </tr>
     </tbody>

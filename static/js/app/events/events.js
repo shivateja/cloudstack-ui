@@ -30,7 +30,7 @@ config(['pluginsProvider', function(pluginsProvider){
 
 angular.module('events').controller('EventsListCtrl', ['$scope', 'events', 'Breadcrumbs', function($scope, events, Breadcrumbs){
     Breadcrumbs.refresh();
-    Breadcrumbs.push('events', '/#/events');
+    Breadcrumbs.push('Events', '/#/events');
     $scope.collection = events;
     $scope.toDisplay = ['type', 'description', 'account', 'created'];
 }]);

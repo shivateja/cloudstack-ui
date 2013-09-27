@@ -16,12 +16,16 @@
 // under the License.
 
 angular.module('resources.configurations', ['services.helperfunctions', 'services.requester', 'services.notifications']);
-angular.module('resources.configurations').factory('Configurations', ['$http', 'Configuration', 'makeArray', 'requester', 'setState', function($http, Configuration, makeArray, requester, setState){
+angular.module('resources.configurations').factory('Configurations', ['$http', 'Configuration', 'makeArray', 'requester', function($http, Configuration, makeArray, requester){
     var pagesize = 20;
 
-    var Configurations = function(configurations, state){
-        this.state = setState(state);
+    // Factory object
+    var Configurations = function(configurations, options){
+        this.options = options;
         this.collection = configurations;
+
+        // Set default pagesize
+        if(!options.pagesize) options.pagesize = pagesize;
     }
 
     //Class methods
@@ -31,20 +35,19 @@ angular.module('resources.configurations').factory('Configurations', ['$http', '
 
     Configurations.prototype.loadNextPage = function(){
         var self = this;
-        var params = {
-            page: this.state.page + 1,
-            pagesize: pagesize
-        }
-        if(this.state.keyword){
-            //Keyword is defined add it to params
-            params.keyword = this.state.keyword;
-        }
+
+        if(!(!!this.options.page)) return;
+
+        // Make a copy of options
+        var params = angular.copy(this.options);
+        params.page++;
+
         return requester.get('listConfigurations', params)
             .then(function(response){
                 return response.data.listconfigurationsresponse.configuration;
             }).then(makeArray(Configuration)).then(function(configurations){
                 if(configurations.length){
-                    self.state.page++;
+                    self.options.page++;
                     self.collection = self.collection.concat(configurations)
                 }
             });
@@ -52,22 +55,61 @@ angular.module('resources.configurations').factory('Configurations', ['$http', '
 
     //Static methods
     Configurations.getFirstPage = function(){
-        return requester.get('listConfigurations', {
-            page: 1,
-            pagesize: pagesize
-        }).then(function(response){
-            return response.data.listconfigurationsresponse.configuration;
-        }).then(makeArray(Configuration)).then(function(collection){
-            return new Configurations(collection, {page: 1});
-        });
+        return Configurations.customFilters().page(1).pagesize(pagesize).get();
     }
 
     Configurations.getAll = function(){
-        return requester.get('listConfigurations').then(function(response){
-            return response.data.listconfigurationsresponse.configuration;
-        }).then(makeArray(Configuration)).then(function(configurations){
-            return new Configurations(configurations);
-        });
+        return Configurations.customFilters().get();
+    }
+
+    Configurations.customFilters = function(){
+        var filters = {};
+        var options = {};
+
+        filters.accountid = function(accountid){
+            options.accountid = accountid;
+            return filters;
+        }
+        filters.category = function(category){
+            options.category = category;
+            return filters;
+        }
+        filters.clusterid = function(clusterid){
+            options.clusterid = clusterid;
+            return filters;
+        }
+        filters.keyword = function(keyword){
+            options.keyword = keyword;
+            return filters;
+        }
+        filters.name = function(name){
+            options.name = name;
+            return filters;
+        }
+        filters.page = function(page){
+            options.page = page;
+            return filters;
+        }
+        filters.pagesize = function(pagesize){
+            options.pagesize = pagesize;
+            return filters;
+        }
+        filters.storageid = function(storageid){
+            options.storageid = storageid;
+            return filters;
+        }
+        filters.zoneid = function(zoneid){
+            options.zoneid = zoneid;
+            return filters;
+        }
+        filters.get = function(){
+            return requester.get('listConfigurations', options).then(function(response){
+                return response.data.listconfigurationsresponse.configuration;
+            }).then(makeArray(Configuration)).then(function(collection){
+                return new Configurations(collection, options);
+            })
+        }
+        return filters;
     }
 
     return Configurations;
@@ -82,6 +124,7 @@ angular.module('resources.configurations').factory('Configuration', ['requester'
         return requester.get('updateConfiguration', {name: this.name, value: this.value}).then(function(response){
             return response.data.updateconfigurationresponse.configuration;
         }).then(function(response){
+            // TODO: Remove notifications from here, move to it the controller that does this
             Notifications.push('success', 'Updated ' + response.name + '. Please restart management server(s) for new settings to take effect');
         });
     };

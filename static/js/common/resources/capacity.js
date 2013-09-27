@@ -1,5 +1,23 @@
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
 angular.module('resources.capacity', ['services.helperfunctions', 'services.requester']);
-angular.module('resources.capacity').factory('Capacities', ['requester', 'makeArray', 'Capacity', function(requester, makeArray, Capacity){
+angular.module('resources.capacity').factory('Capacities', ['requester', 'makeArray', 'Capacity',
+        function(requester, makeArray, Capacity){
     var pagesize = 20;
 
     var Capacities = function(capacities, options){
@@ -9,10 +27,12 @@ angular.module('resources.capacity').factory('Capacities', ['requester', 'makeAr
         if(!this.options.pagesize) this.options.pagesize = pagesize;
     };
 
+    // Class methods
     Capacities.prototype.list = function(){
         return this.collection;
     }
 
+    // Static methods
     Capacities.customFilter = function(){
         var filters = {};
         var options = {};
@@ -73,7 +93,9 @@ angular.module('resources.capacity').factory('Capacity', ['convertByType', funct
     var Capacity = function(attrs){
         angular.extend(this, attrs);
 
+        // If there's podname in the result, add it to zonename
         if(this.podname) this.zonename = this.zonename.concat(', '  + 'Pod: ' + this.podname);
+        // Same thing here
         if(this.clustername) this.zonename = this.zonename.concat(', ' + 'Cluster: ' + this.clustername);
 
         this.percent = parseInt(this.percentused);

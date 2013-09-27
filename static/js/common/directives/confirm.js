@@ -19,11 +19,11 @@ angular.module('directives.confirm', ['ui.bootstrap.dialog']);
 angular.module('directives.confirm').directive('confirm',['$dialog', function($dialog){
     return{
         restrict: 'E',
-        transclude: true,
-        template: '<span ng-transclude></span>',
+        replace: true,
         link: function(scope, element, attrs){
-            element.css('cursor', 'pointer');
-            element.bind('click', function(){
+            var child = angular.element(element.children()[0]);
+            child.css('cursor', 'pointer');
+            child.bind('click', function(){
                 var message = attrs.message || 'Are you sure?';
                 var action = attrs.action;
                 var msgbox = $dialog.messageBox(action, message, [{label:'Yes', result: 'yes'},{label:'No', result: 'no'}]);
@@ -38,6 +38,7 @@ angular.module('directives.confirm').directive('confirm',['$dialog', function($d
                     });
                 });
             });
+            element.replaceWith(child);
         },
     }
 }]);

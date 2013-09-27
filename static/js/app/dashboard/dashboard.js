@@ -28,6 +28,7 @@ angular.module('dashboard').controller('DashboardCtrl', ['$scope', 'Breadcrumbs'
     Breadcrumbs.refresh();
 
     VirtualMachines.getAll().then(function(instances){
+        // Number of running, stopped instances
         $scope.runningInstances = $.grep(instances.list(), function(instance){
             return instance.state === 'Running';
         }).length;

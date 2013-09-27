@@ -28,6 +28,7 @@
                     <input ng-switch-when="input-text" type="text" ng-model="formObject[field.model]">
                     <input ng-switch-when="input-checkbox" type="checkbox" ng-model="formObject[field.model]">
                     <input ng-switch-when="input-password" type="password" ng-model="formObject[field.model]">
+                    <!-- TODO: This is ugly, switch to ng-options instead-->
                     <select ng-switch-when="select" ng-init="optionsCache[field.model] = field.options()" ng-model="formObject[field.model]">
                         <option ng-repeat="option in optionsCache[field.model]" value="{{field.getValue(option)}}">{{field.getName(option)}}</option>
                     </select>

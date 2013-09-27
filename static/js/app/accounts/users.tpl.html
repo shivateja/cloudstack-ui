@@ -1,3 +1,4 @@
+<!--
 // Licensed to the Apache Software Foundation (ASF) under one
 // or more contributor license agreements.  See the NOTICE file
 // distributed with this work for additional information
@@ -14,5 +15,21 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-
-angular.module('security.login', ['security.login.form', 'security.login.toolbar']);
+-->
+<div class="well well-small form-inline">
+    <input type="text" placeholder="Search" class="input-medium search-query" ng-model="search.name">
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th ng-repeat="attribute in toDisplay"> {{dictionary.labels[attribute]}} </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="user in collection.list() | filter: search">
+            <td><a href="{{'/#/accounts/' + account.id + '/users/' + user.id}}">{{user.username}}</a></td>
+            <td>{{user.firstname}}</td>
+            <td>{{user.lastname}}</td>
+        </tr>
+    </tbody>
+</table>

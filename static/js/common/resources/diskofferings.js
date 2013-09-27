@@ -16,14 +16,18 @@
 // under the License.
 
 angular.module('resources.diskofferings', ['services.helperfunctions', 'services.requester']);
-angular.module('resources.diskofferings').factory('DiskOfferings', ['DiskOffering', 'makeArray', 'requester', 'setState', function(DiskOffering, makeArray, requester, setState){
+angular.module('resources.diskofferings').factory('DiskOfferings', ['DiskOffering', 'makeArray', 'requester',
+        function(DiskOffering, makeArray, requester){
     var pagesize = 20;
 
-    var DiskOfferings = function(discOfferings, state){
+    var DiskOfferings = function(discOfferings, options){
+        this.options = options || {};
         this.collection = discOfferings;
-        this.state = setState(state);
+
+        // Set default pagesize
+        if(!options.pagesize) options.pagesize = pagesize;
     }
-    
+
     //Class methods
     DiskOfferings.prototype.list = function(){
         return this.collection;
@@ -31,22 +35,19 @@ angular.module('resources.diskofferings').factory('DiskOfferings', ['DiskOfferin
 
     DiskOfferings.prototype.loadNextPage = function(){
         var self = this;
-        var params = {
-            page: this.state.page + 1,
-            pagesize: pagesize,
-        };
-        if(this.state.keyword){
-            //Keyword is defined
-            //Add it to params
-            params.keyword = this.state.keyword;
-        }
+
+        if(!(!!this.options.page)) return;
+
+        // Make a copy of options
+        var params = angular.copy(this.options);
+        params.page++;
 
         return requester.get('listDiskOfferings', params)
             .then(function(response){
                 return response.data.listdiskofferingsresponse.diskoffering;
             }).then(makeArray(DiskOffering)).then(function(diskofferings){
                 if(diskofferings.length){
-                    self.state.page++;
+                    self.options.page++;
                     self.collection = self.collection.concat(diskofferings);
                 };
             });
@@ -55,23 +56,50 @@ angular.module('resources.diskofferings').factory('DiskOfferings', ['DiskOfferin
     //Static Methods
 
     DiskOfferings.getFirstPage = function(){
-        return requester.get('listDiskOfferings', {
-            page: 1,
-            pagesize: pagesize
-        }).then(function(response){
-            return response.data.listdiskofferingsresponse.diskoffering;
-        }).then(makeArray(DiskOffering)).then(function(collection){
-            return new DiskOfferings(collection, {page: 1});
-        });
+        return DiskOfferings.customFilters().page(1).pagesize(pagesize).get();
     }
 
     DiskOfferings.getAll = function(){
-        return requester.get('listDiskOfferings').then(function(response){
-            return response.data.listdiskofferingsresponse.diskoffering
-        }).then(makeArray(DiskOffering)).then(function(collection){
-            return new DiskOfferings(collection);
-        });
+        return DiskOfferings.customFilters().get();
     };
+
+    DiskOfferings.customFilters = function(){
+        var filters = {};
+        var options = {};
+
+        filters.domainid = function(domainid){
+            options.domainid = domainid;
+            return filters;
+        }
+        filters.id = function(id){
+            options.id = id;
+            return filters;
+        }
+        filters.keyword = function(keyword){
+            options.keyword = keyword;
+            return filters;
+        }
+        filters.name = function(name){
+            options.name = name;
+            return filters;
+        }
+        filters.page = function(page){
+            options.page = page;
+            return filters;
+        }
+        filters.pagesize = function(pagesize){
+            options.pagesize = pagesize;
+            return filters;
+        }
+        filters.get = function(){
+            return requester.get('listDiskOfferings', options).then(function(response){
+                return response.data.listdiskofferingsresponse.diskoffering;
+            }).then(makeArray(DiskOffering)).then(function(collection){
+                return new DiskOfferings(collection, options);
+            })
+        }
+        return filters;
+    }
     return DiskOfferings;
 }]);
 

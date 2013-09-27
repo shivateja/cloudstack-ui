@@ -22,7 +22,7 @@ config(['pluginsProvider', function(pluginsProvider){
         templateUrl: 'table.html',
         resolve: {
             projects: function(Projects){
-                return Projects.getFirstPage();
+                return Projects.getAll();
             }
         }
     })
@@ -30,7 +30,7 @@ config(['pluginsProvider', function(pluginsProvider){
 
 angular.module('projects').controller('ProjectsListCtrl', ['$scope', 'projects', 'Breadcrumbs', function($scope, projects, Breadcrumbs){
     Breadcrumbs.refresh();
-    Breadcrumbs.push('projects', '/#/projects');
+    Breadcrumbs.push('Projects', '/#/projects');
     $scope.collection = projects;
     $scope.toDisplay = ['name', 'displaytext', 'domain', 'account', 'state']
 }]);

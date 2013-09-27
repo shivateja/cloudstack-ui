@@ -1,0 +1,79 @@
+<!--
+// Licensed to the Apache Software Foundation (ASF) under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ASF licenses this file
+// to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+-->
+<div class="btn-group" style="margin-bottom:20px;">
+    <confirm on-ok="restart(network)" action="Restart Network">
+        <button class="btn">
+            <i class="icon-refresh"></i> Restart
+        </button>
+    </confirm>
+    <confirm on-ok="delete(network)" action="Delete Network">
+        <button class="btn">
+            <i class="icon-trash"></i> Delete
+        </button>
+    </confirm>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Attribute Name</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Name</td>
+            <td>{{network.name}}</td>
+        </tr>
+        <tr>
+            <td>ID</td>
+            <td>{{network.id}}</td>
+        </tr>
+        <tr>
+            <td>Zone Name</td>
+            <td>{{network.zonename}}</td>
+        </tr>
+        <tr>
+            <td>Display Text</td>
+            <td>{{network.displaytext}}</td>
+        </tr>
+        <tr>
+            <td>Type</td>
+            <td>{{network.type}}</td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td>{{network.state}}</td>
+        </tr>
+        <tr>
+            <td>Restart Required</td>
+            <td>{{network.restartrequired}}</td>
+        </tr>
+        <tr>
+            <td>Network Offering</td>
+            <td>{{network.networkofferingname}}</td>
+        </tr>
+        <tr>
+            <td>Network Domain Text</td>
+            <td>{{network.networkdomaintext}}</td>
+        </tr>
+        <tr>
+            <td>Domain</td>
+            <td>{{network.domain}}</td>
+        </tr>
+</table>
